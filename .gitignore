@@ -82,5 +82,3 @@ coverage.xml
 .hypothesis/
 .pytest_cache/
 
-# Streamlit
-.streamlit/

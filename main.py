@@ -1,24 +1,12 @@
 """
-Aplicación principal de Streamlit para el proyecto de clasificación multiclase
+Aplicación principal del proyecto de clasificación multiclase
 """
 
-import streamlit as st
-
-def main():
-    st.title("🎯 Proyecto de Clasificación Multiclase")
-    st.subheader("Grupo 1 - Modelos de Ensemble")
-    
-    st.write("""
-    Esta es la aplicación principal del proyecto de clasificación multiclase.
-    
-    **Funcionalidades:**
-    - Carga y análisis de datos
-    - Entrenamiento de modelos de ensemble
-    - Predicciones multiclase
-    - Evaluación de métricas
-    """)
-    
-    st.info("🚧 En desarrollo - Próximamente más funcionalidades")
+from src.api.api import app
+import uvicorn
 
 if __name__ == "__main__":
-    main()
+    print("🚀 Iniciando aplicación de clasificación multiclase...")
+    print("📊 API disponible en: http://localhost:8000")
+    print("📚 Documentación en: http://localhost:8000/docs")
+    uvicorn.run(app, host="0.0.0.0", port=8000)

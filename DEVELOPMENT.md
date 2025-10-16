@@ -25,11 +25,15 @@ pip install -r requirements.txt
 ### 3. Ejecutar la aplicación
 ```bash
 # Con entorno virtual activado
-streamlit run main.py
+python main.py
 ```
 
 ### 4. Acceder a la aplicación
-- **Streamlit**: http://localhost:8501
+- **API FastAPI**: http://localhost:8000
+  - Endpoints para datos y modelos
+  - Recibir/enviar datos programáticamente
+- **Documentación API**: http://localhost:8000/docs
+  - Interfaz interactiva para probar endpoints
 
 ## Comandos Útiles
 
@@ -53,17 +57,16 @@ docker-compose exec app bash
 # Instalar dependencias localmente (opcional)
 pip install -r requirements.txt
 
-# Ejecutar Streamlit localmente
-streamlit run main.py
+# Ejecutar aplicación localmente
+python main.py
 ```
 
 ## Estructura del Proyecto
 
 ```
-├── main.py                 # Aplicación principal (Streamlit)
+├── main.py                 # Aplicación principal (punto de entrada)
 ├── requirements.txt        # Dependencias Python
-├── Dockerfile             # Configuración Docker
-├── docker-compose.yml     # Docker Compose
+├── .env                   # Variables de entorno (NO subir a Git)
 ├── README.md              # Documentación principal
 ├── .gitignore             # Archivos ignorados por Git
 │
@@ -71,7 +74,8 @@ streamlit run main.py
 │   ├── data/              # Código para manejar datos
 │   ├── models/            # Código de modelos ML
 │   ├── utils/             # Utilidades
-│   └── visualization/     # Código para gráficos
+│   ├── visualization/     # Código para gráficos
+│   └── api/               # API FastAPI (backend)
 │
 ├── data/                  # Datos (raw/processed)
 ├── models/                # Modelos entrenados guardados (.pkl, .joblib)
@@ -79,6 +83,26 @@ streamlit run main.py
 ├── tests/                 # Tests unitarios
 └── config/                # Configuraciones
 ```
+
+## ¿Qué hace cada archivo?
+
+### **Archivos principales:**
+- **`main.py`**: Punto de entrada principal (ejecuta la API)
+- **`src/api/api.py`**: API con FastAPI (backend)
+- **`.env`**: Configuración de MongoDB (cada uno tiene su propio archivo)
+
+### **Carpetas de código (`src/`):**
+- **`data/`**: Código para cargar, limpiar y procesar datos
+- **`models/`**: Código para entrenar y usar modelos de ML
+- **`utils/`**: Funciones auxiliares y utilidades
+- **`visualization/`**: Código para crear gráficos y visualizaciones
+- **`api/`**: Endpoints de la API para comunicación entre aplicaciones
+
+### **Carpetas de archivos:**
+- **`data/`**: Archivos de datos (.csv, .json, etc.)
+- **`models/`**: Modelos guardados (.pkl, .joblib)
+- **`notebooks/`**: Jupyter notebooks para análisis
+- **`tests/`**: Tests unitarios del código
 
 ## Flujo de Trabajo
 
