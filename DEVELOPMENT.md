@@ -8,21 +8,28 @@ git clone <url-del-repositorio>
 cd Grupo1_Modelos_de_Ensemble
 ```
 
-### 2. Configurar Docker
+### 2. Configurar entorno virtual
 ```bash
-# Construir la imagen
-docker-compose build
+# Crear entorno virtual
+python3 -m venv venv
 
-# Levantar los servicios
-docker-compose up -d
+# Activar entorno virtual
+source venv/bin/activate  # En macOS/Linux
+# o
+venv\Scripts\activate     # En Windows
 
-# Ver logs
-docker-compose logs -f app
+# Instalar dependencias
+pip install -r requirements.txt
 ```
 
-### 3. Acceder a la aplicación
+### 3. Ejecutar la aplicación
+```bash
+# Con entorno virtual activado
+streamlit run main.py
+```
+
+### 4. Acceder a la aplicación
 - **Streamlit**: http://localhost:8501
-- **MongoDB**: localhost:27017
 
 ## Comandos Útiles
 
