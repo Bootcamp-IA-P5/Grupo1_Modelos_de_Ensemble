@@ -1,0 +1,16 @@
+# Configuración del proyecto
+project:
+  name: "Clasificación Multiclase"
+  version: "1.0.0"
+  description: "Sistema de clasificación multiclase con modelos de ensemble"
+
+data:
+  raw_path: "data/raw/"
+  processed_path: "data/processed/"
+  
+models:
+  save_path: "models/"
+  
+app:
+  port: 8501
+  host: "0.0.0.0"
