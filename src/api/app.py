@@ -6,8 +6,13 @@ import numpy as np
 import pandas as pd
 from typing import Optional, List
 from .schemas.predict import PredictRequest, PredictResponse
+from .schemas.metrics import MetricsEvent
+from pymongo import MongoClient
+from dotenv import load_dotenv
 
 app = FastAPI()
+load_dotenv()
+_mongo_client = None
 
 @app.get("/health")
 def health():
@@ -38,9 +43,6 @@ def risk_metrics():
         raise HTTPException(status_code=500, detail=f"Failed to read fire_risk_metrics.json: {str(e)}")
 
 
-# ==========================
-# POST /predict
-# ==========================
 
 _model = None
 _scaler = None
@@ -119,3 +121,31 @@ def predict(req: PredictRequest):
         risk_level=risk["level"],
         risk_score=risk["score"],
     )
+
+
+
+
+def _get_mongo():
+    global _mongo_client
+    if _mongo_client is None:
+        uri = os.getenv("MONGO_URI")
+        if not uri:
+            raise HTTPException(status_code=500, detail="MONGO_URI not configured")
+        try:
+            _mongo_client = MongoClient(uri)
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=f"Failed to connect MongoDB: {str(e)}")
+    return _mongo_client
+
+
+@app.post("/metrics")
+def post_metrics(event: MetricsEvent):
+    client = _get_mongo()
+    db_name = os.getenv("MONGODB_DB", "fireriskai")
+    coll_name = os.getenv("MONGODB_COLLECTION_METRICS", "metrics")
+    try:
+        doc = event.dict()
+        client[db_name][coll_name].insert_one(doc)
+        return {"status": "stored"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to store metrics: {str(e)}")

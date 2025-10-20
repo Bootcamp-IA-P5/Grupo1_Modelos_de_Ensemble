@@ -2,7 +2,8 @@ from pydantic import BaseModel, conlist
 
 
 class PredictRequest(BaseModel):
-    features: conlist(float, min_items=54, max_items=54)
+    # Pydantic v2: usar min_length/max_length en conlist
+    features: conlist(float, min_length=54, max_length=54)
 
 
 class PredictResponse(BaseModel):
