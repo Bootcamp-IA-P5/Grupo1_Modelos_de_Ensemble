@@ -20,7 +20,7 @@ def model_info():
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to read metadata.json: {str(e)}")
 
-@app.get("/risk-metrics")
+@app.get("/metrics")
 def risk_metrics():
     metrics_path = os.path.join("src", "utils", "fire_risk_metrics.json")
     if not os.path.exists(metrics_path):

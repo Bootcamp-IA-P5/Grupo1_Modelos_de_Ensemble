@@ -76,6 +76,16 @@ curl http://127.0.0.1:8000/health
   curl http://127.0.0.1:8000/model
   ```
 
+- GET `/metrics`
+  - Propósito: Exponer métricas de riesgo generadas por el EDA desde `src/utils/fire_risk_metrics.json` (umbrales, correlaciones, etc.).
+  - Códigos de error:
+    - 404 si no existe `src/utils/fire_risk_metrics.json`.
+    - 500 si hay error al leer/parsear el archivo.
+  - Probar:
+  ```bash
+  curl http://127.0.0.1:8000/risk-metrics
+  ```
+
 ## 📁 Estructura del Proyecto
 
 ```
