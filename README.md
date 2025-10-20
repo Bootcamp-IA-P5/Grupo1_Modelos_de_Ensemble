@@ -1,86 +1,168 @@
-# 🧠 Proyecto de Clasificación Multiclase con Machine Learning
+# 🌲 Forest Cover Type Classification
 
-Este proyecto tiene como finalidad desarrollar un modelo de *machine learning* capaz de resolver un problema real utilizando algoritmos de **clasificación multiclase**.  
-A través de este reto, se busca aplicar todo el conocimiento adquirido sobre análisis de datos, visualización, preprocesamiento, construcción de modelos supervisados y evaluación de resultados.
+> **Modelo de Machine Learning para clasificación de tipos de cobertura forestal con 97.07% de accuracy**
 
-La **clasificación multiclase** es una tarea de aprendizaje supervisado en la que cada instancia de entrada se asigna a una única clase entre tres o más posibles.  
-A diferencia de la clasificación binaria, donde solo hay dos clases, en la clasificación multiclase el modelo debe aprender a distinguir entre múltiples categorías mutuamente excluyentes.
+## 📊 Resumen
 
-Como recurso opcional sugerimos este dataset: **Forest Cover Type Dataset**, solo como sugerencia en caso de no encontrar un dataset adecuado.  
-¡Más instamos a la autenticidad de vosotrxs!
+Este proyecto implementa un **clasificador XGBoost optimizado** que predice el tipo de cobertura forestal basándose en 54 variables geográficas y climáticas. El modelo alcanza una **precisión del 97.07%** en el dataset Forest Cover Type de UCI.
+
+### 🎯 Características Principales
+- **Accuracy**: 97.07%
+- **Algoritmo**: XGBoost optimizado
+- **Dataset**: 581,012 muestras, 54 features, 7 clases
+- **Tiempo de entrenamiento**: ~45 minutos
+- **Overfitting**: <3% (excelente generalización)
+
+## 🚀 Uso Rápido
+
+### Instalación
+```bash
+pip install -r requirements.txt
+```
+
+### Predicción Simple
+```python
+from src.predict import ForestCoverPredictor
+
+# Inicializar predictor
+predictor = ForestCoverPredictor()
+
+# Hacer predicción (54 features)
+features = [1.2, 3.4, 5.6, ...]  # 54 valores
+result = predictor.predict(features)
+
+print(f"Tipo de bosque: {result['class_name']}")
+print(f"Confianza: {result['confidence']:.3f}")
+```
+
+### Ejecutar Demo
+```bash
+python src/predict.py
+```
+
+### API (FastAPI)
+```bash
+# arrancar la API (hot-reload)
+uvicorn src.api.app:app --reload
+
+# comprobar salud
+curl http://127.0.0.1:8000/health
+
+# documentación interactiva
+# abrir en el navegador: http://127.0.0.1:8000/docs
+```
+
+#### Endpoints disponibles
+
+- GET `/health`
+  - Propósito: Comprobar que el servicio está vivo.
+  - Respuesta de ejemplo:
+  ```json
+  {"status": "ok", "service": "FireRiskAI"}
+  ```
+  - Probar:
+  ```bash
+  curl http://127.0.0.1:8000/health
+  ```
+
+- GET `/model`
+  - Propósito: Devolver metadatos del modelo desde `models/metadata.json`.
+  - Respuesta: JSON con nombre, versión, accuracy, algoritmo, parámetros, clases, etc.
+  - Códigos de error:
+    - 404 si no existe `models/metadata.json`.
+    - 500 si hay error al leer/parsear el archivo.
+  - Probar:
+  ```bash
+  curl http://127.0.0.1:8000/model
+  ```
+
+## 📁 Estructura del Proyecto
+
+```
+├── README.md                    # Este archivo
+├── README_MODELOS.md           # Documentación técnica detallada
+├── requirements.txt            # Dependencias
+├── models/                     # Modelos entrenados
+│   ├── best_model.pkl         # Modelo final (XGBoost)
+│   ├── scaler.pkl             # Scaler para preprocesamiento
+│   └── metadata.json          # Información del modelo
+├── src/                       # Código fuente
+│   ├── predict.py             # Script principal de predicción
+│   ├── models/                # Scripts de entrenamiento
+│   ├── api/                   # API endpoints (próximamente)
+│   └── utils/                 # Utilidades
+├── notebooks/                 # Jupyter notebooks
+│   ├── 01_EDA.ipynb          # Análisis exploratorio
+│   └── 02_Model_Training.ipynb # Entrenamiento de modelos
+└── data/                      # Datos
+    ├── raw/                   # Datos originales
+    ├── processed/             # Datos procesados
+    └── external/              # Datos externos
+```
+
+## 🎯 Tipos de Bosque Clasificados
+
+| ID | Nombre | Descripción |
+|----|--------|-------------|
+| 0 | Spruce/Fir | Abeto/Pícea |
+| 1 | Lodgepole Pine | Pino Lodgepole |
+| 2 | Ponderosa Pine | Pino Ponderosa |
+| 3 | Cottonwood/Willow | Álamo/Sauce |
+| 4 | Aspen | Álamo temblón |
+| 5 | Douglas-fir | Abeto de Douglas |
+| 6 | Krummholz | Vegetación alpina |
+
+## 📈 Rendimiento del Modelo
+
+### Métricas Principales
+- **Accuracy**: 97.07%
+- **Precision**: 96.8% (promedio)
+- **Recall**: 96.5% (promedio)
+- **F1-Score**: 96.6% (promedio)
+
+### Comparación de Modelos
+| Modelo | Accuracy | Tiempo Entrenamiento |
+|--------|----------|---------------------|
+| **XGBoost** | **97.07%** | 45 min |
+| RandomForest | 95.41% | 78 min |
+| ExtraTrees | 95.27% | 65 min |
+
+## 🔧 Parámetros del Modelo
+
+```python
+{
+    "learning_rate": 0.2,
+    "max_depth": 10,
+    "n_estimators": 500,
+    "subsample": 0.9,
+    "random_state": 42
+}
+```
+
+## 📚 Documentación
+
+- **[README_MODELOS.md](README_MODELOS.md)**: Documentación técnica completa
+- **[Notebooks](notebooks/)**: Análisis exploratorio y entrenamiento
+- **[Modelos](src/models/)**: Scripts de entrenamiento y comparación
+
+## 🚀 Próximos Pasos
+
+- [ ] **API REST** con FastAPI
+- [ ] **Interfaz web** para predicciones
+- [ ] **Deploy en la nube**
+- [ ] **Monitoreo de rendimiento**
+
+## 👥 Equipo
+
+**Grupo 1 - Modelos de Ensemble**
+- Ingeniero/a de Modelos: Optimización y comparación
+- Ingeniero/a de Datos: Preprocesamiento y EDA  
+- Ingeniero/a de Software: API y deployment
+
+## 📄 Licencia
+
+Este proyecto es parte del bootcamp de IA y está destinado a fines educativos.
 
 ---
 
-## 📦 Condiciones de Entrega
-
-El proyecto es **grupal**.  
-Será necesario entregar:
-
-- Una aplicación que reciba datos como entrada y devuelva una predicción multiclase.  
-- El repositorio en **GitHub**, con ramas bien gestionadas y *commits* limpios.  
-- Un **informe técnico** con las métricas y análisis del modelo.  
-- Una **presentación para negocio** (PowerPoint, Canva, etc.) y una **presentación técnica** del código.  
-- Un enlace a **Trello** u otra herramienta de organización del proyecto.  
-- El **overfitting debe ser inferior al 5%**.
-
----
-
-## 🛠️ Tecnologías a Usar
-
-- Scikit-learn  
-- Pandas / NumPy  
-- Streamlit / Dash / Gradio  
-- Git y GitHub  
-- Docker  
-
----
-
-## 🏆 Niveles de Entrega
-
-### 🟢 Nivel Esencial
-
-✅ Un modelo de clasificación multiclase funcional (mínimo 3 clases).  
-✅ Análisis exploratorio del dataset (EDA) con visualizaciones específicas para clasificación (histogramas por clase, matriz de correlación, etc.).  
-✅ Overfitting controlado (menos del 5% de diferencia entre *training* y *validation*).  
-✅ Aplicación básica que productivice el modelo (Streamlit, Gradio, Dash).  
-✅ Informe con métricas específicas para clasificación multiclase:
-
-- Accuracy global  
-- Precision, Recall y F1 por clase  
-- Matriz de confusión  
-- Feature importance  
-- Análisis de errores  
-
----
-
-### 🟡 Nivel Medio
-
-✅ Aplicación de modelos de *ensemble* para multiclase (Random Forest, XGBoost, LightGBM, etc.).  
-✅ Implementación de **validación cruzada** (*StratifiedKFold* preferentemente para mantener proporciones por clase).  
-✅ Optimización de **hiperparámetros** con técnicas como *GridSearchCV*, *RandomizedSearch*, u *Optuna*.  
-✅ Sistema de recogida de feedback para monitorizar la performance del modelo en producción (métricas en tiempo real).  
-✅ Pipeline de recolección de datos nuevos para reentrenamiento futuro.
-
----
-
-### 🟠 Nivel Avanzado
-
-✅ **Dockerización completa** del proyecto.  
-✅ Integración con **bases de datos** para guardar datos recolectados (MySQL, MongoDB, etc.).  
-✅ **Despliegue en la nube** (Render, Vercel, AWS, etc.).  
-✅ Implementación de **tests unitarios** para:
-
-- Validar integridad de los datos  
-- Comprobar funcionamiento del modelo  
-- Confirmar métricas mínimas deseadas  
-
----
-
-### 🔴 Nivel Experto
-
-✅ Entrenamiento de **redes neuronales** con soporte para multiclase (CNN si el dataset es visual).  
-✅ Aplicación de prácticas **MLOps**:
-
-- A/B Testing para comparar modelos  
-- Monitoreo de *Data Drift* con alertas  
-- Sustitución automática del modelo si una nueva versión supera las métricas predefinidas  
+**¿Necesitas ayuda?** Revisa la [documentación técnica](README_MODELOS.md) o ejecuta `python src/predict.py` para ver un ejemplo.

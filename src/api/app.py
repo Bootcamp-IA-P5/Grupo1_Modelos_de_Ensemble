@@ -8,7 +8,7 @@ app = FastAPI()
 def health():
     return {"status": "ok", "service": "FireRiskAI"}
 
-@app.get("/model/info")
+@app.get("/model")
 def model_info():
     metadata_path = os.path.join("models", "metadata.json")
     if not os.path.exists(metadata_path):
