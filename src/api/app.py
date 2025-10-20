@@ -1,4 +1,5 @@
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 import json
 import os
 import joblib
@@ -7,12 +8,29 @@ import pandas as pd
 from typing import Optional, List
 from .schemas.predict import PredictRequest, PredictResponse
 from .schemas.metrics import MetricsEvent
+from .schemas.feedback import FeedbackRequest, FeedbackResponse
+from .services.feedback_service import FeedbackService
 from pymongo import MongoClient
 from dotenv import load_dotenv
 
-app = FastAPI()
+app = FastAPI(
+    title="FireRiskAI API",
+    description="API para predicción de riesgo de incendios forestales",
+    version="1.0.0"
+)
+
+# Configurar CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # En producción, especificar dominios del front
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 load_dotenv()
 _mongo_client = None
+_feedback_service = None
 
 @app.get("/health")
 def health():
@@ -138,10 +156,19 @@ def _get_mongo():
     return _mongo_client
 
 
+def _get_feedback_service():
+    global _feedback_service
+    if _feedback_service is None:
+        mongo_client = _get_mongo()
+        db_name = os.getenv("MONGODB_DATABASE", "grupo1_modelos_de_ensemble")
+        _feedback_service = FeedbackService(mongo_client, db_name)
+    return _feedback_service
+
+
 @app.post("/metrics")
 def post_metrics(event: MetricsEvent):
     client = _get_mongo()
-    db_name = os.getenv("MONGODB_DB", "fireriskai")
+    db_name = os.getenv("MONGODB_DATABASE", "grupo1_modelos_de_ensemble")
     coll_name = os.getenv("MONGODB_COLLECTION_METRICS", "metrics")
     try:
         doc = event.dict()
@@ -149,3 +176,18 @@ def post_metrics(event: MetricsEvent):
         return {"status": "stored"}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to store metrics: {str(e)}")
+
+
+@app.post("/feedback", response_model=FeedbackResponse)
+def post_feedback(feedback: FeedbackRequest):
+    try:
+        feedback_service = _get_feedback_service()
+        result = feedback_service.store_feedback(
+            request_id=feedback.request_id,
+            predicted_class=feedback.predicted_class,
+            correct_class=feedback.correct_class,
+            notes=feedback.notes
+        )
+        return FeedbackResponse(**result)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error: {str(e)}")
