@@ -6,10 +6,10 @@ import joblib
 import numpy as np
 import pandas as pd
 from typing import Optional, List
-from .schemas.predict import PredictRequest, PredictResponse
-from .schemas.metrics import MetricsEvent
-from .schemas.feedback import FeedbackRequest, FeedbackResponse
-from .services.feedback_service import FeedbackService
+from src.api.schemas.predict import PredictRequest, PredictResponse
+from src.api.schemas.metrics import MetricsEvent
+from src.api.schemas.feedback import FeedbackRequest, FeedbackResponse
+from src.api.services.feedback_service import FeedbackService
 from pymongo import MongoClient
 from dotenv import load_dotenv
 

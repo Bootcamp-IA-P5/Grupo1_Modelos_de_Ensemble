@@ -43,7 +43,7 @@ python src/predict.py
 ### API (FastAPI)
 ```bash
 # arrancar la API (hot-reload)
-uvicorn src.api.app:app --reload
+uvicorn app:app --reload
 
 # comprobar salud
 curl http://127.0.0.1:8000/health
