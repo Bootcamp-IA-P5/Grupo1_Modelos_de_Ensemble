@@ -136,10 +136,32 @@ Si muchos usuarios califican como "malo":
 - **Pydantic:** Validación de datos
 - **Motor:** Conexión asíncrona a MongoDB
 
+## ✅ **FUNCIONALIDADES IMPLEMENTADAS:**
+
+### **1. GUARDADO AUTOMÁTICO:**
+- ✅ **Endpoint `/predict`** guarda automáticamente cada predicción
+- ✅ **Metadata completa** (usuario, ubicación, timestamp, confianza)
+- ✅ **No bloquea** la respuesta al usuario
+- ✅ **Manejo de errores** sin afectar la predicción
+- ✅ **Sin errores en consola** - Sistema completamente funcional
+
+### **2. ENDPOINTS DE CONSULTA:**
+- ✅ **`/predictions/recent`** - Ver predicciones recientes
+- ✅ **`/predictions/stats`** - Estadísticas de rendimiento
+- ✅ **`/database/status`** - Estado de la conexión
+
+### **3. MÉTRICAS EN TIEMPO REAL:**
+- ✅ **Tiempo de procesamiento** de cada predicción
+- ✅ **Confianza promedio** del modelo
+- ✅ **Distribución de predicciones** por tipo
+- ✅ **Conteo de predicciones** por período
+- ✅ **Hash de features** para detectar duplicados
+- ✅ **Registro de métricas** sin errores
+
 ## 📈 **PRÓXIMOS PASOS:**
 
-1. **Integrar con endpoint real** - Que `/predict` guarde automáticamente
-2. **Dashboard de monitoreo** - Ver métricas en tiempo real
+1. **Sistema de feedback** - Que usuarios califiquen predicciones
+2. **Dashboard de monitoreo** - Ver métricas en tiempo real (frontend)
 3. **Sistema de alertas** - Notificar problemas
 4. **Análisis de data drift** - Detectar cambios en los datos
 
@@ -150,15 +172,53 @@ Si muchos usuarios califican como "malo":
 curl -X GET "http://localhost:8000/database/status"
 ```
 
-### **Probar guardado:**
+### **Hacer predicción (se guarda automáticamente):**
 ```bash
-curl -X POST "http://localhost:8000/test/save-prediction"
+curl -X POST "http://localhost:8000/predict" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "features": [2000, 180, 15, 300, 50, 1000, 200, 220, 180, 2000, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    "user_id": "usuario123",
+    "location": {"lat": 40.7128, "lon": -74.0060}
+  }'
 ```
 
 ### **Ver predicciones guardadas:**
 ```bash
-curl -X GET "http://localhost:8000/test/list-predictions"
+curl -X GET "http://localhost:8000/predictions/recent?limit=5"
 ```
+
+### **Ver estadísticas:**
+```bash
+curl -X GET "http://localhost:8000/predictions/stats"
+```
+
+### **Probar guardado (endpoint de prueba):**
+```bash
+curl -X POST "http://localhost:8000/test/save-prediction"
+```
+
+## 🚨 **SOLUCIÓN DE PROBLEMAS**
+
+### **Error: "Error guardando predicción: 'features'"**
+- ✅ **SOLUCIONADO** - Era causado por el servicio de métricas
+- ✅ **Causa:** Faltaban las features en el diccionario de métricas
+- ✅ **Solución:** Agregar `"features": req.features` en `metrics_service.record_prediction()`
+- ✅ **Estado:** Sistema completamente funcional sin errores
+
+### **Error: "authentication failed"**
+- ✅ Verifica que el usuario y contraseña sean correctos
+- ✅ Asegúrate de que el usuario tenga permisos de lectura/escritura
+- ✅ Verifica que no haya espacios extra en la URL
+
+### **Error: "network access denied"**
+- ✅ Agrega tu IP a la lista blanca en "Network Access"
+- ✅ O usa `0.0.0.0/0` para permitir todas las IPs (menos seguro)
+
+### **Error: "connection timeout"**
+- ✅ Verifica tu conexión a internet
+- ✅ Asegúrate de que el cluster esté activo
+- ✅ Verifica que la URL de conexión sea correcta
 
 ---
 

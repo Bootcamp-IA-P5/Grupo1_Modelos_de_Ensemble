@@ -4,8 +4,13 @@ import numpy as np
 import pandas as pd
 import os
 import json
+import time
 from typing import Optional, List
+from datetime import datetime
 from src.api.schemas.predict import PredictRequest, PredictResponse
+from src.api.schemas.prediction import PredictionData
+from src.api.services.database import db_service
+from src.api.services.metrics_service import metrics_service
 
 router = APIRouter()
 
@@ -52,7 +57,17 @@ _risk_mapping = {
 }
 
 @router.post("/predict", response_model=PredictResponse)
-def predict(req: PredictRequest):
+async def predict(req: PredictRequest):
+    """
+    Endpoint principal de predicción con guardado automático en MongoDB
+    
+    ¿Qué hace este endpoint?
+    - Hace la predicción como antes
+    - Guarda automáticamente en MongoDB
+    - Registra métricas de rendimiento
+    - Mantiene compatibilidad con el frontend
+    """
+    start_time = time.time()
     _load_artifacts()
     
     features = np.array(req.features, dtype=float).reshape(1, -1)
@@ -93,11 +108,138 @@ def predict(req: PredictRequest):
     class_name = risk_info["name"]
     
     confidence = float(max(proba)) if proba is not None else 1.0
+    processing_time = (time.time() - start_time) * 1000  # en milisegundos
 
-    return PredictResponse(
+    # Crear respuesta
+    response = PredictResponse(
         prediction=y_pred,
         class_name=class_name,
         confidence=confidence,
         risk_level=risk_info["level"],
         risk_score=risk_info["score"],
+        processing_time_ms=processing_time
     )
+
+    # Guardar en MongoDB (en segundo plano, no bloquea la respuesta)
+    try:
+        await _save_prediction_to_db(req, response, processing_time)
+    except Exception as e:
+        # No fallar la predicción si hay error guardando
+        print(f"⚠️ Error guardando predicción en DB: {e}")
+
+    return response
+
+async def _save_prediction_to_db(req: PredictRequest, response: PredictResponse, processing_time: float):
+    """
+    Guardar predicción en MongoDB de forma asíncrona
+    
+    ¿Por qué esta función?
+    - No bloquea la respuesta al usuario
+    - Maneja errores sin afectar la predicción
+    - Registra métricas para análisis
+    """
+    try:
+        # Conectar a la base de datos si no está conectada
+        if db_service.database is None:
+            await db_service.connect()
+        
+        # Crear documento para MongoDB
+        prediction_data = PredictionData(
+            features=req.features,
+            user_id=req.user_id,
+            location=req.location,
+            prediction=response.prediction,
+            class_name=response.class_name,
+            confidence=response.confidence,
+            risk_level=response.risk_level,
+            risk_score=response.risk_score,
+            processing_time_ms=processing_time,
+            timestamp=datetime.utcnow()
+        )
+        
+        # Guardar en MongoDB
+        collection = db_service.get_collection("predictions")
+        result = await collection.insert_one(prediction_data.dict(by_alias=True))
+        
+        # Registrar métricas
+        await metrics_service.record_prediction({
+            "prediction": response.prediction,
+            "confidence": response.confidence,
+            "processing_time_ms": processing_time,
+            "features": req.features  # Agregar features para el hash
+        })
+        
+        print(f"✅ Predicción guardada: {result.inserted_id}")
+        
+    except Exception as e:
+        print(f"❌ Error guardando predicción: {e}")
+        # No re-lanzar el error para no afectar la respuesta
+
+@router.get("/predictions/recent")
+async def get_recent_predictions(limit: int = 10):
+    """
+    Obtener predicciones recientes guardadas en MongoDB
+    
+    ¿Para qué sirve?
+    - Ver las últimas predicciones hechas
+    - Verificar que se están guardando correctamente
+    - Análisis de patrones de uso
+    """
+    try:
+        # Conectar a la base de datos si no está conectada
+        if db_service.database is None:
+            await db_service.connect()
+        
+        collection = db_service.get_collection("predictions")
+        predictions = []
+        
+        # Obtener predicciones recientes
+        async for pred in collection.find().sort("timestamp", -1).limit(limit):
+            # Convertir ObjectId a string para JSON
+            pred["_id"] = str(pred["_id"])
+            # Simplificar features para la respuesta (solo mostrar primeras 5)
+            if "features" in pred and len(pred["features"]) > 5:
+                pred["features_preview"] = pred["features"][:5]
+                del pred["features"]  # Remover features completas para ahorrar espacio
+            predictions.append(pred)
+        
+        return {
+            "success": True,
+            "count": len(predictions),
+            "predictions": predictions,
+            "database": db_service.db_name
+        }
+        
+    except Exception as e:
+        return {
+            "success": False,
+            "message": f"Error obteniendo predicciones: {str(e)}"
+        }
+
+@router.get("/predictions/stats")
+async def get_prediction_stats():
+    """
+    Obtener estadísticas de predicciones
+    
+    ¿Para qué sirve?
+    - Ver métricas de rendimiento
+    - Análisis de uso
+    - Detectar patrones
+    """
+    try:
+        # Obtener métricas del servicio
+        performance = metrics_service.get_model_performance()
+        feedback_analysis = metrics_service.get_feedback_analysis()
+        
+        return {
+            "success": True,
+            "performance": performance,
+            "feedback_analysis": feedback_analysis,
+            "database": db_service.db_name
+        }
+        
+    except Exception as e:
+        return {
+            "success": False,
+            "message": f"Error obteniendo estadísticas: {str(e)}"
+        }

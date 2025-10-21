@@ -78,14 +78,8 @@ class PredictionData(BaseModel):
     risk_score: int
     processing_time_ms: Optional[float] = None
     
-    # Metadata
+    # Metadata básica
     timestamp: datetime = Field(default_factory=datetime.utcnow)
-    model_version: str = Field(default="1.0.0", description="Versión del modelo")
-    api_version: str = Field(default="1.0.0", description="Versión de la API")
-    
-    # Para análisis
-    session_id: Optional[str] = Field(None, description="ID de sesión del usuario")
-    ip_address: Optional[str] = Field(None, description="IP del usuario")
     
     class Config:
         """Configuración de Pydantic"""
