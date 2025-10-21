@@ -100,7 +100,7 @@ class DatabaseService:
         - Verifica que estemos conectados
         - Consistencia en toda la app
         """
-        if not self.database:
+        if self.database is None:
             raise RuntimeError("❌ Base de datos no conectada. Llama a connect() primero.")
         
         return self.database[collection_name]
