@@ -1,8 +1,6 @@
 # Docker Compose para EcoPrint AI
 # Sistema de Predicción de Riesgo de Incendios Forestales
 
-version: '3.8'
-
 services:
   # ===========================================
   # API Backend
@@ -22,8 +20,8 @@ services:
     volumes:
       - ./models:/app/models:ro  # Solo lectura para los modelos
       - ./logs:/app/logs         # Logs de la aplicación
-    depends_on:
-      - mongo
+    # depends_on:
+    #   - mongo  # Comentado porque MongoDB es opcional
     restart: unless-stopped
     networks:
       - ecoprint-network
