@@ -1,0 +1,45 @@
+# Render.com configuration for EcoPrint AI
+# Sistema de Predicción de Riesgo de Incendios Forestales
+
+services:
+  # ===========================================
+  # API Backend Service
+  # ===========================================
+  - type: web
+    name: ecoprint-api
+    env: docker
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    plan: free  # Cambiar a starter o standard para producción
+    region: oregon  # oregon, frankfurt, singapore
+    branch: feature/dockerization  # o main/development
+    
+    # Variables de entorno
+    envVars:
+      - key: MONGO_URI
+        sync: false  # Se configura manualmente en Render
+      - key: DB_NAME
+        value: ensemble_models
+      - key: PYTHONPATH
+        value: /app
+      - key: PYTHONUNBUFFERED
+        value: "1"
+    
+    # Configuración de salud
+    healthCheckPath: /health
+    
+    # Configuración de red
+    httpPort: 8000
+    
+    # Configuración de recursos (para plan gratuito)
+    disk:
+      name: ecoprint-disk
+      mountPath: /app/logs
+      sizeGB: 1
+    
+    # Auto-deploy
+    autoDeploy: true
+    
+    # Configuración de build
+    buildCommand: echo "Building with Docker..."
+    startCommand: echo "Starting with Docker..."
