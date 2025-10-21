@@ -153,6 +153,3 @@ El modelo XGBoost optimizado ha superado exitosamente todos los objetivos establ
 
 ---
 
-*Evaluación realizada el: $(date)*  
-*Modelo: XGBoost Forest Cover Type Classifier v1.0.0*  
-*Dataset: Forest Cover Type (UCI ML Repository)*
