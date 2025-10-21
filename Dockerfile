@@ -1,42 +1,24 @@
-# Dockerfile para EcoPrint AI - Sistema de Predicción de Riesgo de Incendios Forestales
-# Multi-stage build para optimizar el tamaño de la imagen
+# Dockerfile para Render.com
+# EcoPrint AI - Sistema de Predicción de Riesgo de Incendios Forestales
 
-# ===========================================
-# STAGE 1: Build stage
-# ===========================================
-FROM python:3.11-slim as builder
+FROM python:3.11-slim
 
-# Instalar dependencias del sistema necesarias para compilar
+# Instalar dependencias del sistema
 RUN apt-get update && apt-get install -y \
+    curl \
     gcc \
     g++ \
     && rm -rf /var/lib/apt/lists/*
 
-# Crear directorio de trabajo
-WORKDIR /app
-
-# Copiar requirements y instalar dependencias
-COPY requirements.txt .
-RUN pip install --no-cache-dir --user -r requirements.txt
-
-# ===========================================
-# STAGE 2: Runtime stage
-# ===========================================
-FROM python:3.11-slim
-
-# Instalar dependencias del sistema para runtime
-RUN apt-get update && apt-get install -y \
-    curl \
-    && rm -rf /var/lib/apt/lists/*
-
-# Crear usuario no-root para seguridad
+# Crear usuario no-root
 RUN groupadd -r ecoprint && useradd -r -g ecoprint ecoprint
 
 # Crear directorio de trabajo
 WORKDIR /app
 
-# Copiar dependencias instaladas desde el stage anterior
-COPY --from=builder /root/.local /home/ecoprint/.local
+# Copiar requirements e instalar dependencias
+COPY requirements.txt.backup requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
 # Copiar código de la aplicación
 COPY . .
@@ -44,14 +26,11 @@ COPY . .
 # Crear directorios necesarios
 RUN mkdir -p data/processed data/raw data/external models logs
 
-# Cambiar ownership de archivos al usuario ecoprint
+# Cambiar ownership
 RUN chown -R ecoprint:ecoprint /app
 
 # Cambiar al usuario no-root
 USER ecoprint
-
-# Agregar el directorio de dependencias al PATH
-ENV PATH=/home/ecoprint/.local/bin:$PATH
 
 # Variables de entorno
 ENV PYTHONPATH=/app
