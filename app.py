@@ -6,7 +6,8 @@ from src.api.routes import (
     model_router, 
     metrics_router,
     predict_router,
-    feedback_router
+    feedback_router,
+    database_router
 )
 
 # Crear app FastAPI
@@ -34,3 +35,4 @@ app.include_router(model_router)
 app.include_router(metrics_router)
 app.include_router(predict_router)
 app.include_router(feedback_router)
+app.include_router(database_router)
