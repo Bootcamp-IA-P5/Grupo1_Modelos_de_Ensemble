@@ -1,0 +1,29 @@
+# Render.com configuration
+# Forzar detección como Docker
+
+services:
+  - type: web
+    name: ecoprint-ai
+    env: docker
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    plan: free
+    region: oregon
+    branch: feature/dockerization
+    
+    # Variables de entorno
+    envVars:
+      - key: MONGO_URI
+        sync: false
+      - key: DB_NAME
+        value: ensemble_models
+      - key: PYTHONPATH
+        value: /app
+      - key: PYTHONUNBUFFERED
+        value: "1"
+    
+    # Configuración de salud
+    healthCheckPath: /health
+    
+    # Configuración de red
+    httpPort: 8000
