@@ -1,134 +1,249 @@
-# 🌟 Clasificador Multiclase de Alto Rendimiento
+# 🔥 FireRiskAI - Sistema de Predicción de Riesgo de Incendios Forestales
 
-Proyecto integral de **Clasificación Multiclase** en Machine Learning, centrado en resolver un problema real. El desarrollo abarca desde el análisis de datos hasta la puesta en producción con prácticas MLOps.
+## 📋 Descripción del Proyecto
 
----
+Este proyecto es el desarrollo de **EcoPredict Web Application**, una solución basada en **clasificación multiclase** que tiene como objetivo resolver un problema real. La visión del proyecto está directamente ligada a una estrategia de datos robusta, clave para la construcción de un modelo de Machine Learning de alto rendimiento.
 
-## 🧭 Índice
+## 🎯 Características Principales
 
-* 📌 Resumen del Proyecto
-* 📂 Enunciado y Desafío
-* 🎯 Concepto Clave: Clasificación Multiclase
-* 📦 Condiciones y Entregables
-* 🛠️ Tecnologías Clave
-* 🏆 Niveles de Entrega (Hoja de Ruta)
-* 👩‍💻 Contribuidores
----
+- **Clasificación de 7 tipos de bosque** con 97.07% de precisión
+- **Evaluación de riesgo de incendio** basada en características de inflamabilidad
+- **API REST** para predicciones en tiempo real
+- **Análisis de features** con nombres reales interpretables
+- **Documentación completa** para desarrolladores
 
-## 📌 Resumen del Proyecto
+## 🚀 Resultados del Modelo
 
-Este proyecto tiene como finalidad desarrollar un **modelo de machine learning** capaz de resolver un problema real utilizando algoritmos de **clasificación multiclase**.
+### 📊 Métricas de Rendimiento
+| Métrica | Valor | Estado |
+|---------|-------|--------|
+| **Accuracy** | 97.07% | ✅ Objetivo cumplido (≥97%) |
+| **Overfitting** | 2.92% | ✅ Controlado (<5%) |
+| **Errores** | 2.93% | ✅ Mínimos |
 
-A través de este reto, se busca aplicar y consolidar el conocimiento adquirido sobre:
-1.  Análisis exploratorio de datos (EDA) y visualización.
-2.  Preprocesamiento y *Feature Engineering*.
-3.  Construcción de modelos supervisados (desde algoritmos básicos hasta *ensembles* y Redes Neuronales).
-4.  Evaluación rigurosa de resultados (métricas multiclase).
-5.  Productivización y prácticas MLOps.
+### 🎯 Tipos de Bosque Clasificados
+| Clase | Nombre | Nivel de Riesgo | Score |
+|-------|--------|-----------------|-------|
+| 0 | Spruce/Fir | LOW | 2 |
+| 1 | Lodgepole Pine | HIGH | 8 |
+| 2 | Ponderosa Pine | MEDIUM | 5 |
+| 3 | Cottonwood/Willow | LOW | 1 |
+| 4 | Aspen | MEDIUM | 4 |
+| 5 | Douglas-fir | MEDIUM | 6 |
+| 6 | Krummholz | HIGH | 9 |
 
-## 📂 Enunciado y Desafío
+### 🔍 Top 5 Features Más Importantes
+1. **Soil_Type37** (6.90%) - Tipo de suelo más determinante
+2. **Soil_Type4** (5.41%) - Segundo tipo de suelo más relevante
+3. **Soil_Type2** (5.26%) - Tercer tipo de suelo importante
+4. **Soil_Type22** (4.84%) - Cuarto tipo de suelo relevante
+5. **Wilderness_Area1** (4.20%) - Primera área silvestre
 
-El reto principal es crear una solución *end-to-end* (de principio a fin) que demuestre la capacidad de abordar un problema complejo de clasificación.
+## 🛠️ Instalación y Configuración
 
-### ✨ Puntos Focales
+### Prerrequisitos
+- Python 3.11+
+- pip
+- virtualenv (recomendado)
 
-| ✅ Fortalezas Clave | ⚠️ Restricción Crítica |
-| :--- | :--- |
-| Enfoque en métricas específicas multiclase (Precision, Recall, F1 por clase). | **Overfitting** debe ser **inferior al 5%** (diferencia entre *training* y *validation*). |
-| Aplicación de técnicas avanzadas (Validación Cruzada Estratificada, Optimización de Hiperparámetros). | Requiere la entrega de una **aplicación funcional** (Streamlit/Gradio/Dash). |
-| Implementación de *pipelines* de MLOps y Dockerización. | El proyecto es **Grupal** y requiere organización con Trello/similar. |
+### Instalación
+```bash
+# Clonar el repositorio
+git clone <repository-url>
+cd Grupo1_Modelos_de_Ensemble
 
-## 🎯 Concepto Clave: Clasificación Multiclase
+# Crear entorno virtual
+python -m venv venv
+source venv/bin/activate  # En Windows: venv\Scripts\activate
 
-La **clasificación multiclase** es una tarea de aprendizaje supervisado donde una instancia de entrada se asigna a **una única clase** entre **tres o más posibles** categorías mutuamente excluyentes.
+# Instalar dependencias
+pip install -r requirements.txt
+```
 
-> **Dataset Sugerido (Opcional):** [Forest Cover Type Dataset](https://archive.ics.uci.edu/ml/datasets/Covertype). Se fomenta la autenticidad y la búsqueda de un dataset original que resuelva un problema de interés.
+### Estructura del Proyecto
+```
+Grupo1_Modelos_de_Ensemble/
+├── src/
+│   ├── api/                 # API REST endpoints
+│   ├── evaluation/          # Scripts de evaluación
+│   ├── models/              # Comparación de modelos
+│   └── utils/               # Utilidades
+├── models/                  # Modelos entrenados
+│   ├── best_model.pkl      # Modelo XGBoost optimizado
+│   ├── scaler.pkl          # Scaler para normalización
+│   └── metadata.json       # Metadatos del modelo
+├── data/
+│   └── processed/          # Archivos generados
+│       ├── confusion_matrix.png
+│       ├── metrics_per_class.csv
+│       └── feature_importance.png
+├── docs/                   # Documentación
+├── notebooks/              # Jupyter notebooks
+└── tests/                  # Tests unitarios
+```
 
----
+## 🚀 Uso del Sistema
 
-## 📦 Condiciones y Entregables
+### 1. Evaluación del Modelo
+```bash
+# Ejecutar evaluación completa
+python src/evaluation/model_evaluator.py
+```
 
-* **Modalidad:** Proyecto **Grupal**.
-* **Requerimiento de Overfitting:** Diferencia de métrica $< 5\%$ entre *training* y *validation*.
+**Archivos generados:**
+- `data/processed/confusion_matrix.png` - Matriz de confusión
+- `data/processed/metrics_per_class.csv` - Métricas por clase
+- `data/processed/feature_importance.png` - Importancia de features
 
-### 📝 Entregables Requeridos
+### 2. API REST
+```bash
+# Iniciar servidor API
+uvicorn app:app --reload --host 0.0.0.0 --port 8000
+```
 
-1.  **Aplicación Web** que reciba datos y devuelva una predicción multiclase (Streamlit/Dash/Gradio).
-2.  **Repositorio en GitHub** con buena gestión de ramas (*GitFlow* o similar) y *commits* limpios.
-3.  **Informe Técnico** detallado con métricas, EDA, preprocesamiento y análisis de errores.
-4.  **Presentaciones:** Una para **negocio** (visión general) y otra **técnica** (código y arquitectura).
-5.  **Enlace a Herramienta de Organización** (Trello, Jira, Notion, etc.).
+**Endpoint de predicción:**
+```bash
+POST /predict
+Content-Type: application/json
 
----
+{
+  "features": [elevation, aspect, slope, ..., wilderness_area4]
+}
+```
 
-## 🛠️ Herramientas y Tecnologías
+**Respuesta:**
+```json
+{
+  "prediction": 1,
+  "class_name": "Lodgepole Pine",
+  "confidence": 0.982,
+  "risk_level": "HIGH",
+  "risk_score": 8
+}
+```
 
-### ⚙️ Backend y Modelo
+### 3. Uso Programático
+```python
+from src.predict import ForestCoverPredictor
 
-[![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
-[![Scikit-learn](https://img.shields.io/badge/Scikit--learn-F7931E?style=for-the-badge&logo=scikit-learn&logoColor=white)](https://scikit-learn.org/stable/)
-[![Pandas](https://img.shields.io/badge/Pandas-150458?style=for-the-badge&logo=pandas&logoColor=white)](https://pandas.pydata.org/)
-[![NumPy](https://img.shields.io/badge/NumPy-013243?style=for-the-badge&logo=numpy&logoColor=white)](https://numpy.org/)
-[![XGBoost](https://img.shields.io/badge/XGBoost-005EB8?style=for-the-badge&logo=xgboost&logoColor=white)](https://xgboost.readthedocs.io/en/latest/)
+# Inicializar predictor
+predictor = ForestCoverPredictor()
 
-### 🌐 Frontend y Productivización
+# Hacer predicción
+features = [elevation, aspect, slope, ...]  # 54 features
+result = predictor.predict(features)
 
-[![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/HTML)
-[![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/CSS)
-[![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
-[![React](https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://reactjs.org/)
-[![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com/)
-[![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/)
+print(f"Tipo de bosque: {result['class_name']}")
+print(f"Confianza: {result['confidence']:.3f}")
+```
 
----
+## 📊 Dataset y Features
 
-## 🏆 Niveles de Entrega (Hoja de Ruta)
+### Forest Cover Type Dataset
+- **Fuente:** UCI ML Repository (ID: 31)
+- **Muestras:** 581,012
+- **Features:** 54 (10 continuas + 44 categóricas)
+- **Clases:** 7 tipos de cobertura forestal
 
-### 🟢 Nivel Esencial
+### Features Principales
+- **Elevation** - Elevación del terreno
+- **Aspect** - Orientación de la pendiente
+- **Slope** - Inclinación de la pendiente
+- **Horizontal_Distance_To_Hydrology** - Distancia horizontal al agua
+- **Vertical_Distance_To_Hydrology** - Distancia vertical al agua
+- **Horizontal_Distance_To_Roadways** - Distancia a carreteras
+- **Hillshade_9am/Noon/3pm** - Sombreado en diferentes horas
+- **Horizontal_Distance_To_Fire_Points** - Distancia a puntos de fuego
+- **Wilderness_Area1-4** - Áreas silvestres (4 tipos)
+- **Soil_Type1-40** - Tipos de suelo (40 tipos)
 
-El mínimo funcional y bien documentado.
+## 🔧 Desarrollo
 
-* ✅ Modelo de Clasificación Multiclase funcional (mínimo 3 clases).
-* ✅ **EDA completo** con visualizaciones orientadas a clasificación.
-* ✅ Overfitting **< 5%**.
-* ✅ **Aplicación básica** (Streamlit/Gradio/Dash).
-* ✅ Informe con **todas las métricas multiclase requeridas**: Accuracy global, Precision, Recall y F1 *por clase*, Matriz de confusión, *Feature Importance*.
+### Entrenamiento de Modelos
+```bash
+# Comparación de modelos baseline
+python src/models/01_baseline_comparison.py
 
-### 🟡 Nivel Medio
+# Optimización de XGBoost
+python src/models/02_full_ensemble_comparison.py
+```
 
-Enfoque en la robustez y optimización del modelo.
+### Tests
+```bash
+# Ejecutar tests
+python -m pytest tests/
+```
 
-* ✅ Aplicación de **modelos de *ensemble***.
-* ✅ Implementación de **Validación Cruzada Estratificada** (`StratifiedKFold`).
-* ✅ **Optimización de hiperparámetros** (GridSearch, RandomizedSearch, Optuna).
-* ✅ Sistema de **recogida de feedback** y **pipeline de recolección de datos nuevos**.
+## 📈 Análisis de Rendimiento
 
-### 🟠 Nivel Avanzado
+### Matriz de Confusión
+El modelo muestra excelente rendimiento en todas las clases, con mayor dificultad en clases minoritarias:
+- **Spruce/Fir:** 97.35% precisión
+- **Lodgepole Pine:** 97.19% precisión
+- **Ponderosa Pine:** 96.52% precisión
+- **Cottonwood/Willow:** 90.82% precisión (clase minoritaria)
+- **Aspen:** 94.06% precisión (clase minoritaria)
+- **Douglas-fir:** 94.69% precisión
+- **Krummholz:** 97.57% precisión
 
-Enfoque en la productivización y calidad de ingeniería.
+### Análisis de Errores
+- **Total de errores:** 3,406 de 116,203 (2.93%)
+- **Confianza promedio en errores:** 74.4%
+- **Clases más confundidas:** Cottonwood/Willow y Aspen (clases minoritarias)
 
-* ✅ **Dockerización completa** del proyecto.
-* ✅ Integración con **bases de datos** para almacenar datos recolectados.
-* ✅ **Despliegue en la nube** (Render, Vercel, AWS, etc.).
-* ✅ Implementación de **tests unitarios** (datos, modelo y métricas).
+## 🎯 Aplicaciones
 
-### 🔴 Nivel Experto
+### Gestión Forestal
+- **Identificación de tipos de bosque** para inventarios forestales
+- **Evaluación de riesgo de incendio** para planificación preventiva
+- **Análisis de vulnerabilidad** de diferentes ecosistemas
 
-Adopción de prácticas MLOps avanzadas.
+### Investigación
+- **Estudios ecológicos** sobre distribución de especies
+- **Análisis de biodiversidad** en diferentes tipos de suelo
+- **Modelado de ecosistemas** forestales
 
-* ✅ Entrenamiento de **Redes Neuronales**.
-* ✅ Implementación de prácticas **MLOps**:
-    * **A/B Testing** para comparación de modelos.
-    * **Monitoreo de Data Drift** con alertas.
-    * **Sustitución automática del modelo** en producción.
+## 📚 Documentación Adicional
 
----
+- [Evaluación Detallada del Modelo](docs/MODEL_EVALUATION.md)
+- [Documentación de Endpoints](docs/README_ENDPOINTS.md)
+- [Guía de Desarrollo](docs/DEVELOPMENT.md)
 
-## 👩‍💻 Contribuidores
+## 🤝 Contribución
+
+1. Fork el proyecto
+2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
+3. Commit tus cambios (`git commit -m 'Add some AmazingFeature'`)
+4. Push a la rama (`git push origin feature/AmazingFeature`)
+5. Abre un Pull Request
+
+## 📄 Licencia
+
+Este proyecto está bajo la Licencia MIT. Ver `LICENSE` para más detalles.
+
+## 👥 Equipo
+
+- **Rol 1:** Análisis Exploratorio de Datos (EDA)
+- **Rol 2:** Ingeniero/a de Modelos
+- **Rol 3:** Análisis de Riesgo de Incendios
+- **Rol 4:** Evaluación de Modelos
+
+## 👩‍💻 Contribuyentes
 
 | Nombre | GitHub | LinkedIn |
-| :--- | :--- | :--- |
-| *[Nombre del Contribuidor 1]* | *[Enlace GitHub]* | *[Enlace LinkedIn]* |
-| *[Nombre del Contribuidor 2]* | *[Enlace GitHub]* | *[Enlace LinkedIn]* |
-| *[Nombre del Contribuidor 3]* | *[Enlace GitHub]* | *[Enlace LinkedIn]* |
-| *[Nombre del Contribuidor 4]* | *[Enlace GitHub]* | *[Enlace LinkedIn]* |
+|--------|--------|----------|
+| **[Alfonso Bermúdez Torres]** | [![GitHub](https://img.shields.io/badge/GitHub-181717?logo=github&logoColor=white)]([https://github.com/GHalfbbt]) | [![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?logo=linkedin&logoColor=white)]([https://www.linkedin.com/in/alfonsobermudeztorres/]]) |
+| **[Bárbara Sánchez Urbano ]** | [![GitHub](https://img.shields.io/badge/GitHub-181717?logo=github&logoColor=white)]([https://github.com/Barbarasanchez11]) | [![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?logo=linkedin&logoColor=white)]([https://github.com/Barbarasanchez11]) |
+| **[Bunty Nanwani]** | [![GitHub](https://img.shields.io/badge/GitHub-181717?logo=github&logoColor=white)]([https://www.linkedin.com/in/buntynanwani/]) | [![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?logo=linkedin&logoColor=white)]([https://www.linkedin.com/in/buntynanwani/]) |
+| **[Aroa Mateo Gómez]** | [![GitHub](https://img.shields.io/badge/GitHub-181717?logo=github&logoColor=white)]([https://github.com/Arowi95]) | [![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?logo=linkedin&logoColor=white)]([https://www.linkedin.com/in/aroamateogomez/]) |
+
+
+
+
+## 📞 Contacto
+
+Para preguntas o sugerencias, por favor contacta al equipo de desarrollo.
+
+---
+
+**FireRiskAI** - Predicción inteligente de riesgo de incendios forestales 🌲🔥
