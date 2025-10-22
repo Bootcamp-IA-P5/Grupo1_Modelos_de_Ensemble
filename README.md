@@ -1,86 +1,134 @@
-# 🧠 Proyecto de Clasificación Multiclase con Machine Learning
+# 🌟 Clasificador Multiclase de Alto Rendimiento
 
-Este proyecto tiene como finalidad desarrollar un modelo de *machine learning* capaz de resolver un problema real utilizando algoritmos de **clasificación multiclase**.  
-A través de este reto, se busca aplicar todo el conocimiento adquirido sobre análisis de datos, visualización, preprocesamiento, construcción de modelos supervisados y evaluación de resultados.
-
-La **clasificación multiclase** es una tarea de aprendizaje supervisado en la que cada instancia de entrada se asigna a una única clase entre tres o más posibles.  
-A diferencia de la clasificación binaria, donde solo hay dos clases, en la clasificación multiclase el modelo debe aprender a distinguir entre múltiples categorías mutuamente excluyentes.
-
-Como recurso opcional sugerimos este dataset: **Forest Cover Type Dataset**, solo como sugerencia en caso de no encontrar un dataset adecuado.  
-¡Más instamos a la autenticidad de vosotrxs!
+Proyecto integral de **Clasificación Multiclase** en Machine Learning, centrado en resolver un problema real. El desarrollo abarca desde el análisis de datos hasta la puesta en producción con prácticas MLOps.
 
 ---
 
-## 📦 Condiciones de Entrega
+## 🧭 Índice
 
-El proyecto es **grupal**.  
-Será necesario entregar:
+* 📌 Resumen del Proyecto
+* 📂 Enunciado y Desafío
+* 🎯 Concepto Clave: Clasificación Multiclase
+* 📦 Condiciones y Entregables
+* 🛠️ Tecnologías Clave
+* 🏆 Niveles de Entrega (Hoja de Ruta)
+* 👩‍💻 Contribuidores
+---
 
-- Una aplicación que reciba datos como entrada y devuelva una predicción multiclase.  
-- El repositorio en **GitHub**, con ramas bien gestionadas y *commits* limpios.  
-- Un **informe técnico** con las métricas y análisis del modelo.  
-- Una **presentación para negocio** (PowerPoint, Canva, etc.) y una **presentación técnica** del código.  
-- Un enlace a **Trello** u otra herramienta de organización del proyecto.  
-- El **overfitting debe ser inferior al 5%**.
+## 📌 Resumen del Proyecto
+
+Este proyecto tiene como finalidad desarrollar un **modelo de machine learning** capaz de resolver un problema real utilizando algoritmos de **clasificación multiclase**.
+
+A través de este reto, se busca aplicar y consolidar el conocimiento adquirido sobre:
+1.  Análisis exploratorio de datos (EDA) y visualización.
+2.  Preprocesamiento y *Feature Engineering*.
+3.  Construcción de modelos supervisados (desde algoritmos básicos hasta *ensembles* y Redes Neuronales).
+4.  Evaluación rigurosa de resultados (métricas multiclase).
+5.  Productivización y prácticas MLOps.
+
+## 📂 Enunciado y Desafío
+
+El reto principal es crear una solución *end-to-end* (de principio a fin) que demuestre la capacidad de abordar un problema complejo de clasificación.
+
+### ✨ Puntos Focales
+
+| ✅ Fortalezas Clave | ⚠️ Restricción Crítica |
+| :--- | :--- |
+| Enfoque en métricas específicas multiclase (Precision, Recall, F1 por clase). | **Overfitting** debe ser **inferior al 5%** (diferencia entre *training* y *validation*). |
+| Aplicación de técnicas avanzadas (Validación Cruzada Estratificada, Optimización de Hiperparámetros). | Requiere la entrega de una **aplicación funcional** (Streamlit/Gradio/Dash). |
+| Implementación de *pipelines* de MLOps y Dockerización. | El proyecto es **Grupal** y requiere organización con Trello/similar. |
+
+## 🎯 Concepto Clave: Clasificación Multiclase
+
+La **clasificación multiclase** es una tarea de aprendizaje supervisado donde una instancia de entrada se asigna a **una única clase** entre **tres o más posibles** categorías mutuamente excluyentes.
+
+> **Dataset Sugerido (Opcional):** [Forest Cover Type Dataset](https://archive.ics.uci.edu/ml/datasets/Covertype). Se fomenta la autenticidad y la búsqueda de un dataset original que resuelva un problema de interés.
 
 ---
 
-## 🛠️ Tecnologías a Usar
+## 📦 Condiciones y Entregables
 
-- Scikit-learn  
-- Pandas / NumPy  
-- Streamlit / Dash / Gradio  
-- Git y GitHub  
-- Docker  
+* **Modalidad:** Proyecto **Grupal**.
+* **Requerimiento de Overfitting:** Diferencia de métrica $< 5\%$ entre *training* y *validation*.
+
+### 📝 Entregables Requeridos
+
+1.  **Aplicación Web** que reciba datos y devuelva una predicción multiclase (Streamlit/Dash/Gradio).
+2.  **Repositorio en GitHub** con buena gestión de ramas (*GitFlow* o similar) y *commits* limpios.
+3.  **Informe Técnico** detallado con métricas, EDA, preprocesamiento y análisis de errores.
+4.  **Presentaciones:** Una para **negocio** (visión general) y otra **técnica** (código y arquitectura).
+5.  **Enlace a Herramienta de Organización** (Trello, Jira, Notion, etc.).
 
 ---
 
-## 🏆 Niveles de Entrega
+## 🛠️ Herramientas y Tecnologías
+
+### ⚙️ Backend y Modelo
+
+[![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
+[![Scikit-learn](https://img.shields.io/badge/Scikit--learn-F7931E?style=for-the-badge&logo=scikit-learn&logoColor=white)](https://scikit-learn.org/stable/)
+[![Pandas](https://img.shields.io/badge/Pandas-150458?style=for-the-badge&logo=pandas&logoColor=white)](https://pandas.pydata.org/)
+[![NumPy](https://img.shields.io/badge/NumPy-013243?style=for-the-badge&logo=numpy&logoColor=white)](https://numpy.org/)
+[![XGBoost](https://img.shields.io/badge/XGBoost-005EB8?style=for-the-badge&logo=xgboost&logoColor=white)](https://xgboost.readthedocs.io/en/latest/)
+
+### 🌐 Frontend y Productivización
+
+[![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/HTML)
+[![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/CSS)
+[![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+[![React](https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://reactjs.org/)
+[![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com/)
+[![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/)
+
+---
+
+## 🏆 Niveles de Entrega (Hoja de Ruta)
 
 ### 🟢 Nivel Esencial
 
-✅ Un modelo de clasificación multiclase funcional (mínimo 3 clases).  
-✅ Análisis exploratorio del dataset (EDA) con visualizaciones específicas para clasificación (histogramas por clase, matriz de correlación, etc.).  
-✅ Overfitting controlado (menos del 5% de diferencia entre *training* y *validation*).  
-✅ Aplicación básica que productivice el modelo (Streamlit, Gradio, Dash).  
-✅ Informe con métricas específicas para clasificación multiclase:
+El mínimo funcional y bien documentado.
 
-- Accuracy global  
-- Precision, Recall y F1 por clase  
-- Matriz de confusión  
-- Feature importance  
-- Análisis de errores  
-
----
+* ✅ Modelo de Clasificación Multiclase funcional (mínimo 3 clases).
+* ✅ **EDA completo** con visualizaciones orientadas a clasificación.
+* ✅ Overfitting **< 5%**.
+* ✅ **Aplicación básica** (Streamlit/Gradio/Dash).
+* ✅ Informe con **todas las métricas multiclase requeridas**: Accuracy global, Precision, Recall y F1 *por clase*, Matriz de confusión, *Feature Importance*.
 
 ### 🟡 Nivel Medio
 
-✅ Aplicación de modelos de *ensemble* para multiclase (Random Forest, XGBoost, LightGBM, etc.).  
-✅ Implementación de **validación cruzada** (*StratifiedKFold* preferentemente para mantener proporciones por clase).  
-✅ Optimización de **hiperparámetros** con técnicas como *GridSearchCV*, *RandomizedSearch*, u *Optuna*.  
-✅ Sistema de recogida de feedback para monitorizar la performance del modelo en producción (métricas en tiempo real).  
-✅ Pipeline de recolección de datos nuevos para reentrenamiento futuro.
+Enfoque en la robustez y optimización del modelo.
 
----
+* ✅ Aplicación de **modelos de *ensemble***.
+* ✅ Implementación de **Validación Cruzada Estratificada** (`StratifiedKFold`).
+* ✅ **Optimización de hiperparámetros** (GridSearch, RandomizedSearch, Optuna).
+* ✅ Sistema de **recogida de feedback** y **pipeline de recolección de datos nuevos**.
 
 ### 🟠 Nivel Avanzado
 
-✅ **Dockerización completa** del proyecto.  
-✅ Integración con **bases de datos** para guardar datos recolectados (MySQL, MongoDB, etc.).  
-✅ **Despliegue en la nube** (Render, Vercel, AWS, etc.).  
-✅ Implementación de **tests unitarios** para:
+Enfoque en la productivización y calidad de ingeniería.
 
-- Validar integridad de los datos  
-- Comprobar funcionamiento del modelo  
-- Confirmar métricas mínimas deseadas  
-
----
+* ✅ **Dockerización completa** del proyecto.
+* ✅ Integración con **bases de datos** para almacenar datos recolectados.
+* ✅ **Despliegue en la nube** (Render, Vercel, AWS, etc.).
+* ✅ Implementación de **tests unitarios** (datos, modelo y métricas).
 
 ### 🔴 Nivel Experto
 
-✅ Entrenamiento de **redes neuronales** con soporte para multiclase (CNN si el dataset es visual).  
-✅ Aplicación de prácticas **MLOps**:
+Adopción de prácticas MLOps avanzadas.
 
-- A/B Testing para comparar modelos  
-- Monitoreo de *Data Drift* con alertas  
-- Sustitución automática del modelo si una nueva versión supera las métricas predefinidas  
+* ✅ Entrenamiento de **Redes Neuronales**.
+* ✅ Implementación de prácticas **MLOps**:
+    * **A/B Testing** para comparación de modelos.
+    * **Monitoreo de Data Drift** con alertas.
+    * **Sustitución automática del modelo** en producción.
+
+---
+
+## 👩‍💻 Contribuidores
+
+| Nombre | GitHub | LinkedIn |
+| :--- | :--- | :--- |
+| *[Nombre del Contribuidor 1]* | *[Enlace GitHub]* | *[Enlace LinkedIn]* |
+| *[Nombre del Contribuidor 2]* | *[Enlace GitHub]* | *[Enlace LinkedIn]* |
+| *[Nombre del Contribuidor 3]* | *[Enlace GitHub]* | *[Enlace LinkedIn]* |
+| *[Nombre del Contribuidor 4]* | *[Enlace GitHub]* | *[Enlace LinkedIn]* |
