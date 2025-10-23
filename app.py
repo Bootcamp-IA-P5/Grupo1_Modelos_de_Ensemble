@@ -10,6 +10,8 @@ from src.api.routes import (
     database_router,
     test_storage_router
 )
+from src.api.routes.weather import router as weather_router
+from src.api.routes.predict_with_weather import router as predict_weather_router
 
 # Crear app FastAPI
 app = FastAPI(
@@ -38,3 +40,5 @@ app.include_router(predict_router)
 app.include_router(feedback_router)
 app.include_router(database_router)
 app.include_router(test_storage_router)
+app.include_router(weather_router)
+app.include_router(predict_weather_router)
