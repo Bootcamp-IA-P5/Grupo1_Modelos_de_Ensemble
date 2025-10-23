@@ -12,6 +12,8 @@ from src.api.routes import (
 )
 from src.api.routes.weather import router as weather_router
 from src.api.routes.predict_with_weather import router as predict_weather_router
+from src.api.routes.ab_testing import router as ab_testing_router
+from src.api.routes.dashboard import router as dashboard_router
 
 # Crear app FastAPI
 app = FastAPI(
@@ -42,3 +44,5 @@ app.include_router(database_router)
 app.include_router(test_storage_router)
 app.include_router(weather_router)
 app.include_router(predict_weather_router)
+app.include_router(ab_testing_router)
+app.include_router(dashboard_router)
