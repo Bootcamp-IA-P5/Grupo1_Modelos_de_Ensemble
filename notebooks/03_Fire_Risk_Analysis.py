@@ -1,6 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
 # # 🔥 FireRiskAI - Análisis de Riesgo de Incendios Forestales
 # 
 # ## 📊 EDA Específico para Prevención de Incendios
