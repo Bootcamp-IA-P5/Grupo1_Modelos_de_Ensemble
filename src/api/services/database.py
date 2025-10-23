@@ -4,6 +4,7 @@ EcoPrint - Sistema de Predicción de Riesgo de Incendios Forestales
 """
 
 import os
+import platform
 import logging
 from motor.motor_asyncio import AsyncIOMotorClient
 from dotenv import load_dotenv
@@ -30,15 +31,58 @@ class DatabaseService:
         ¿Por qué en __init__?
         - Configuramos las variables una sola vez
         - No conectamos hasta que se necesite (lazy loading)
+        - Detectamos el SO automáticamente
         """
         self.client = None
         self.database = None
+        self.os_name = platform.system().lower()
         
         # Obtener configuración desde variables de entorno
         self.mongo_uri = os.getenv("MONGO_URI")
         self.db_name = os.getenv("DB_NAME", "ensemble_models")
         
-        logger.info(f"🔧 DatabaseService inicializado para: {self.db_name}")
+        logger.info(f"🔧 DatabaseService inicializado para: {self.db_name} en {self.os_name}")
+    
+    def _get_ssl_config(self):
+        """
+        Obtener configuración SSL según el sistema operativo
+        
+        ¿Por qué diferentes configuraciones?
+        - Windows: Problemas con certificados SSL
+        - Mac/Linux: Configuración estándar funciona bien
+        """
+        
+        if self.os_name == "windows":
+            # Configuración para Windows (más permisiva)
+            return {
+                'serverSelectionTimeoutMS': 60000,  # 60 segundos
+                'connectTimeoutMS': 60000,         # 60 segundos
+                'socketTimeoutMS': 60000,          # 60 segundos
+                'maxPoolSize': 5,                  # Menos conexiones
+                'retryWrites': True,
+                'retryReads': True,
+                'ssl': True,
+                'ssl_cert_reqs': 0,                # No verificar certificados
+                'tls': True,
+                'tlsAllowInvalidCertificates': True,
+                'tlsAllowInvalidHostnames': True,
+                'tlsInsecure': True,               # Permitir conexiones inseguras
+                'directConnection': False,         # Usar replica set
+                'readPreference': 'primaryPreferred',
+            }
+        else:
+            # Configuración para Mac/Linux (estándar)
+            return {
+                'serverSelectionTimeoutMS': 30000,  # 30 segundos
+                'connectTimeoutMS': 30000,         # 30 segundos
+                'socketTimeoutMS': 30000,          # 30 segundos
+                'maxPoolSize': 10,                 # Más conexiones
+                'retryWrites': True,
+                'retryReads': True,
+                'ssl': True,
+                'tls': True,
+                'readPreference': 'primaryPreferred',
+            }
     
     async def connect(self):
         """
@@ -62,8 +106,9 @@ class DatabaseService:
             
             logger.info("🔌 Conectando a MongoDB Atlas...")
             
-            # Crear cliente asíncrono
-            self.client = AsyncIOMotorClient(self.mongo_uri)
+            # Crear cliente asíncrono con configuración según el SO
+            ssl_config = self._get_ssl_config()
+            self.client = AsyncIOMotorClient(self.mongo_uri, **ssl_config)
             
             # Seleccionar base de datos
             self.database = self.client[self.db_name]
