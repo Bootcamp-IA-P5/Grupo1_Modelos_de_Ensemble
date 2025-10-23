@@ -43,10 +43,6 @@ app.include_router(feedback_router)
 app.include_router(database_router)
 app.include_router(test_storage_router)
 app.include_router(weather_router)
-<<<<<<< HEAD
 app.include_router(predict_weather_router)
 app.include_router(ab_testing_router)
 app.include_router(dashboard_router)
-=======
-app.include_router(predict_weather_router)
->>>>>>> feature/external-apis
