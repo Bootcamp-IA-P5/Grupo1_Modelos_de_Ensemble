@@ -48,8 +48,7 @@ data/processed/
 *.pkl
 *.joblib
 
-# Model files
-models/
+# Model files - ignore all .pkl files (too large for git)
 *.model
 *.pkl
 *.joblib
