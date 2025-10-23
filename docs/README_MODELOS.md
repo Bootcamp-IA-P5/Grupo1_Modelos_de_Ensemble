@@ -14,11 +14,11 @@ Este proyecto implementa y compara **múltiples modelos de ensemble** para clasi
 
 ## 🏆 Resultados Finales
 
-| Modelo | Accuracy |
-|--------|----------|
-| **RandomForest** | **95.41%** | 
-| **ExtraTrees** | **95.5-96.0%** |
-| **XGBoost** | **95.0-96.0%** |
+| Modelo | Accuracy | Estado | Tiempo Optimización |
+|--------|----------|--------|-------------------|
+| **RandomForest** | **95.41%** | ✅ Optimizado | 77.8 min |
+| **ExtraTrees** | **95.5-96.0%** | 🔄 En optimización | ~25-30 min |
+| **XGBoost** | **95.0-96.0%** | 🔄 En optimización | ~20-25 min |
 
 ---
 
