@@ -27,3 +27,14 @@ python-dotenv>=1.0.0
 pytest>=7.0.0
 pytest-asyncio>=0.21.0
 httpx>=0.24.0  # Para TestClient de FastAPI
+
+# Code quality
+flake8>=6.0.0
+
+# External APIs
+requests>=2.31.0
+
+# Additional ML libraries for A/B testing
+xgboost>=1.7.0
+lightgbm>=4.0.0
+catboost>=1.2.0
