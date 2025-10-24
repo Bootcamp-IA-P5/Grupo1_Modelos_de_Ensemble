@@ -2,7 +2,7 @@
 
 ## 📋 Descripción del Proyecto
 
-Este proyecto es el desarrollo de **EcoPredict Web Application**, una solución basada en **clasificación multiclase** que tiene como objetivo resolver un problema real. La visión del proyecto está directamente ligada a una estrategia de datos robusta, clave para la construcción de un modelo de Machine Learning de alto rendimiento.
+Este proyecto es el desarrollo de **FireRiskAI Web Application**, una solución basada en **clasificación multiclase** que tiene como objetivo resolver un problema real. La visión del proyecto está directamente ligada a una estrategia de datos robusta, clave para la construcción de un modelo de Machine Learning de alto rendimiento.
 
 ## 🎯 Características Principales
 
@@ -246,4 +246,8 @@ Para preguntas o sugerencias, por favor contacta al equipo de desarrollo.
 
 ---
 
-**FireRiskAI** - Predicción inteligente de riesgo de incendios forestales 🌲🔥
+<div align="center">
+
+*Desarrollado con ❤️ usando Python*
+
+</div>
