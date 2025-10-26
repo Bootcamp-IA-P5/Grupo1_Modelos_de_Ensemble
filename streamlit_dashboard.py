@@ -222,15 +222,15 @@ elif page == "🤖 Modelos":
     if model_compare:
         st.subheader("Comparación de Modelos")
         
-        best_model = model_compare.get("best_model")
-        current_model = model_compare.get("current_model")
+        best_model = model_compare.get("best_model", "N/A")
+        current_model = model_compare.get("current_model", "N/A")
         should_replace = model_compare.get("should_replace", False)
         
         col1, col2, col3 = st.columns(3)
         with col1:
-            st.metric("Modelo Actual", current_model.upper())
+            st.metric("Modelo Actual", str(current_model).upper() if current_model else "N/A")
         with col2:
-            st.metric("Mejor Modelo", best_model.upper())
+            st.metric("Mejor Modelo", str(best_model).upper() if best_model else "N/A")
         with col3:
             st.metric("¿Debería Reemplazarse?", "✅ Sí" if should_replace else "❌ No")
         
@@ -286,7 +286,7 @@ elif page == "🌤️ Clima":
         else:
             st.error("Error obteniendo datos del clima")
 
-# Auto-refresh cada 30 segundos
-time.sleep(30)
-st.rerun()
+# Botón de refresh manual
+if st.sidebar.button("🔄 Actualizar Datos"):
+    st.rerun()
 
