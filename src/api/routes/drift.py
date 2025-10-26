@@ -90,3 +90,32 @@ async def get_drift_status():
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+@router.get("/drift/alerts")
+async def get_drift_alerts():
+    """
+    Obtener alertas de drift activas
+    """
+    try:
+        alerts = []
+        
+        # Obtener última detección
+        if drift_detector.drift_history:
+            latest = drift_detector.drift_history[-1]
+            
+            if latest.get("has_drift"):
+                alerts.append({
+                    "type": "DRIFT_DETECTED",
+                    "severity": latest.get("drift_severity", "MEDIUM"),
+                    "message": f"Drift detectado con severidad {latest.get('drift_severity')}",
+                    "timestamp": latest.get("timestamp"),
+                    "max_difference": latest.get("max_difference")
+                })
+        
+        return {
+            "alerts": alerts,
+            "total_alerts": len(alerts),
+            "has_active_alerts": len(alerts) > 0
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
