@@ -226,12 +226,12 @@ curl -X POST http://localhost:8000/models/replace/xgboost
 
 ## ✅ Estado Actual
 
-**Auto Model Replacement:** ✅ **IMPLEMENTADO**
+**Auto Model Replacement:** ✅ **IMPLEMENTADO (Versión Manual)**
 
 - ✅ Comparación de modelos
-- ✅ Reemplazo manual de modelos
+- ✅ Reemplazo manual de modelos (via endpoint)
 - ✅ Consulta de modelo actual
 - ✅ Integración con A/B Testing
-- ⏳ Reemplazo automático (pendiente)
-- ⏳ Rollback automático (pendiente)
+
+**Nota:** La versión actual requiere que ejecutes manualmente los endpoints para reemplazar modelos. Para automatización completa, se puede implementar un cron job que ejecute `/models/compare` periódicamente y `/models/replace` si hay un mejor modelo.
 
