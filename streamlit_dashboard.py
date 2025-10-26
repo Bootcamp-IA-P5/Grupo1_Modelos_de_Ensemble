@@ -32,13 +32,16 @@ page = st.sidebar.selectbox(
 )
 
 # Función para hacer peticiones al backend
-@st.cache_data(ttl=10)
-def fetch_data(endpoint):
-    """Hacer petición al backend con caché de 10 segundos"""
+@st.cache_data(ttl=30)
+def fetch_data(endpoint, timeout=60):
+    """Hacer petición al backend con caché de 30 segundos"""
     try:
-        response = requests.get(f"{BASE_URL}{endpoint}", timeout=5)
+        response = requests.get(f"{BASE_URL}{endpoint}", timeout=timeout)
         if response.status_code == 200:
             return response.json()
+        return None
+    except requests.exceptions.ReadTimeout:
+        st.error(f"⏱️ El endpoint {endpoint} está tardando demasiado. ¿El backend está procesando?")
         return None
     except Exception as e:
         st.error(f"Error conectando al backend: {e}")
@@ -71,49 +74,44 @@ if page == "🏠 Inicio":
 elif page == "📊 Métricas":
     st.header("📊 Dashboard de Métricas")
     
-    # Obtener métricas del backend
-    metrics = fetch_data("/metrics")
+    # Obtener información del modelo (más rápido que /metrics)
+    model_info = fetch_data("/model")
     
-    if metrics:
+    if model_info:
+        model_data = model_info.get("model_info", {})
+        perf = model_info.get("performance", {})
+        
         col1, col2, col3, col4 = st.columns(4)
         
         with col1:
-            st.metric("Accuracy", f"{metrics.get('model_performance', {}).get('accuracy', 0)*100:.2f}%")
+            st.metric("Accuracy", f"{perf.get('accuracy', 0)*100:.2f}%")
         with col2:
-            st.metric("Precision", f"{metrics.get('model_performance', {}).get('precision', 0)*100:.2f}%")
+            st.metric("Clases", perf.get("classes", 7))
         with col3:
-            st.metric("Recall", f"{metrics.get('model_performance', {}).get('recall', 0)*100:.2f}%")
+            st.metric("Features", perf.get("features", 54))
         with col4:
-            st.metric("F1 Score", f"{metrics.get('model_performance', {}).get('f1_score', 0)*100:.2f}%")
+            st.metric("Dataset Size", f"{perf.get('dataset_size', 0):,}")
         
-        # Métricas de producción
-        st.subheader("Métricas de Producción")
-        prod_metrics = metrics.get("production_metrics", {})
+        # Información del modelo
+        st.subheader("Información del Modelo")
+        st.write(f"**Nombre**: {model_data.get('name', 'N/A')}")
+        st.write(f"**Algoritmo**: {model_data.get('algorithm', 'N/A')}")
+        st.write(f"**Versión**: {model_data.get('version', 'N/A')}")
         
-        col1, col2, col3 = st.columns(3)
-        with col1:
-            st.metric("Total Predicciones", prod_metrics.get("total_predictions", 0))
-        with col2:
-            st.metric("Confianza Promedio", f"{prod_metrics.get('avg_confidence', 0)*100:.2f}%")
-        with col3:
-            st.metric("Tiempo Promedio", f"{prod_metrics.get('avg_processing_time', 0):.2f}ms")
+        # Parámetros del modelo
+        params = model_info.get("parameters", {})
+        st.subheader("Parámetros del Modelo")
+        st.write(f"**Learning Rate**: {params.get('learning_rate', 'N/A')}")
+        st.write(f"**Max Depth**: {params.get('max_depth', 'N/A')}")
+        st.write(f"**N Estimators**: {params.get('n_estimators', 'N/A')}")
         
-        # Análisis de confianza
-        st.subheader("Análisis de Confianza")
-        conf_analysis = metrics.get("confidence_analysis", {})
-        
-        high_conf = conf_analysis.get("high_confidence_count", 0)
-        low_conf = conf_analysis.get("low_confidence_count", 0)
-        
-        df_conf = pd.DataFrame({
-            "Confianza": ["Alta (>0.8)", "Baja (<0.8)"],
-            "Cantidad": [high_conf, low_conf]
-        })
-        
-        fig = px.pie(df_conf, values="Cantidad", names="Confianza", title="Distribución de Confianza")
-        st.plotly_chart(fig, use_container_width=True)
+        # Clases del modelo
+        usage = model_info.get("usage", {})
+        if "class_names" in usage:
+            st.subheader("Clases del Modelo")
+            st.write(", ".join(usage.get("class_names", [])))
     else:
-        st.error("No se pudieron obtener las métricas")
+        st.error("No se pudieron obtener las métricas del modelo")
 
 # Página: A/B Testing
 elif page == "🧪 A/B Testing":
