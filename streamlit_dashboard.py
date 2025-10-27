@@ -1820,17 +1820,18 @@ elif page == "🧪 A/B Testing":
 elif page == "🔍 Data Drift":
     st.header("🔍 Data Drift Monitoring")
     
-    # Información sobre Data Drift
-    st.info("""
-    💡 **¿Qué es Data Drift?**
+    # Introducción llamativa
+    st.markdown("""
+    ### 🎯 ¿Por qué es importante el Data Drift?
     
-    El Data Drift detecta cuando los datos de entrada cambian significativamente con el tiempo, 
-    lo que puede hacer que nuestro modelo no funcione correctamente.
+    El **Data Drift** es un problema crítico en Machine Learning: cuando los datos de producción 
+    cambian respecto a los datos de entrenamiento, el modelo puede perder precisión.
     
-    **Para usar esta funcionalidad:**
-    1. Primero establece una baseline con datos de entrenamiento
-    2. Luego verifica drift con datos nuevos
-    3. El sistema te alertará si hay cambios significativos
+    **✅ Valor de esta funcionalidad:**
+    - 🛡️ **Prevención proactiva**: Detecta problemas antes de que afecten la precisión
+    - 📊 **Transparencia**: Te mantiene informado sobre cambios en tus datos
+    - 💰 **Ahorro de costos**: Evita predicciones incorrectas que cuestan dinero
+    - 🔄 **Reentrenamiento inteligente**: Sabes cuándo es necesario reentrenar el modelo
     """)
     
     # Estado actual
@@ -1863,6 +1864,58 @@ elif page == "🔍 Data Drift":
                 """)
         else:
             st.success("✅ No hay alertas de drift activas")
+        
+        # Demo interactiva de Data Drift
+        st.markdown("---")
+        st.subheader("🎬 Demo: Simular Data Drift")
+        
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            drift_magnitude = st.slider(
+                "Magnitud del Cambio (%)",
+                min_value=0,
+                max_value=50,
+                value=0,
+                help="Simular qué tan diferente son los nuevos datos"
+            )
+        
+        with col2:
+            simulate_drift = st.button("🔍 Simular Data Drift", type="primary")
+        
+        if simulate_drift:
+            with st.spinner("Analizando cambios en los datos..."):
+                time.sleep(1)
+                
+                if drift_magnitude < 10:
+                    st.success(f"✅ **Sin drift detectado** (cambio del {drift_magnitude}%)")
+                    st.info("""
+                    🎯 **El sistema está funcionando perfectamente:**
+                    
+                    - Los datos de producción están alineados con los datos de entrenamiento
+                    - El modelo mantiene su precisión
+                    - No es necesario reentrenar
+                    """)
+                elif drift_magnitude < 25:
+                    st.warning(f"⚠️ **Drift DETECTADO** (cambio del {drift_magnitude}%)")
+                    st.error("""
+                    🚨 **Acción recomendada:**
+                    
+                    - Los datos han cambiado significativamente
+                    - Considerar reentrenar el modelo
+                    - Monitorear la accuracy en las próximas semanas
+                    - Umbral de reentrenamiento: 20% de cambio
+                    """)
+                else:
+                    st.error(f"🚨 **DRIFT CRÍTICO** (cambio del {drift_magnitude}%)")
+                    st.error("""
+                    ⚠️ **ACCIÓN INMEDIATA REQUERIDA:**
+                    
+                    - **REENTRENAR EL MODELO INMEDIATAMENTE**
+                    - Los datos han cambiado demasiado
+                    - El modelo actual puede estar obsoleto
+                    - Accuracy esperada: <90% (debajo del umbral)
+                    """)
         
         # Sección para establecer baseline
         if not has_baseline:
