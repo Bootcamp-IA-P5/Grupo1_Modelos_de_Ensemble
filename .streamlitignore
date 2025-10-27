@@ -1,0 +1,44 @@
+# Streamlit ignore file
+# Archivos que NO se suben a Streamlit Cloud
+
+# Modelos grandes (no necesarios para el dashboard)
+*.pkl
+*.joblib
+*.model
+
+# Datos
+*.csv
+*.parquet
+*.json
+
+# Notebooks
+*.ipynb
+
+# Logs
+*.log
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Virtual environment
+venv/
+env/
+.venv/
+
+# Git
+.git/
+.gitignore
+
+# Scripts
+scripts/
+*.sh
+
+# Tests
+tests/
+
+# Documentation (solo docs, no los archivos pesados)
+docs/*.md
+!docs/README.md
+!docs/PRESENTATION_GUIDE.md
+
