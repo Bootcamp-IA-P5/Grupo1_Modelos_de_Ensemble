@@ -1,6 +1,6 @@
 """
-API del clima - VERSIÓN SÚPER SIMPLE
-Solo obtiene temperatura y humedad
+API del clima - VERSIÓN SIMPLE
+Solo obtiene temperatura y humedad usando Weather API
 """
 
 from fastapi import APIRouter

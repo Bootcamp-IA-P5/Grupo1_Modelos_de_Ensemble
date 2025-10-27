@@ -1,0 +1,42 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:  # Allow manual trigger
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    
+    - name: Run tests before deploy (excluding MongoDB tests)
+      run: |
+        pytest tests/test_health_real.py tests/test_model.py tests/test_metrics_simple.py tests/test_predict.py -v --tb=short
+    
+    - name: Test app startup
+      run: |
+        python -c "from app import app; print('✅ App ready for deployment')"
+    
+    - name: Deploy to Render
+      uses: johnbeynon/render-deploy-action@v0.0.8
+      with:
+        service-id: ${{ secrets.RENDER_SERVICE_ID }}
+        api-key: ${{ secrets.RENDER_API_KEY }}
+    
+    - name: Verify deployment
+      run: |
+        echo "🚀 Deployment completed successfully!"
+        echo "Check your Render dashboard for deployment status"

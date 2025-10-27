@@ -48,11 +48,15 @@ data/processed/
 *.pkl
 *.joblib
 
-# Model files
-models/
+# Model files - ignore all .pkl files (too large for git)
 *.model
 *.pkl
 *.joblib
+
+# Allow Python training scripts in src/models/ (but not __pycache__)
+!src/models/
+!src/models/*.py
+src/models/__pycache__/
 
 # Logs
 logs/

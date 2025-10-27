@@ -1,8 +1,13 @@
+
 # 🔥 FireRiskAI - Sistema de Predicción de Riesgo de Incendios Forestales
 
 ## 📋 Descripción del Proyecto
 
-FireRiskAI es un sistema de machine learning que predice el tipo de cobertura forestal y evalúa el riesgo de incendio asociado. Utiliza un modelo XGBoost optimizado entrenado con el Forest Cover Type Dataset de UCI ML Repository.
+
+FireRiskAI es una aplicación web impulsada por inteligencia artificial que combina **clasificación multiclase** y análisis predictivo para abordar un problema real: **la evaluación del riesgo de incendios forestales**. El sistema utiliza un modelo **XGBoost optimizado**, entrenado con el **Forest Cover Type Dataset** del UCI Machine Learning Repository, para **predecir el tipo de cobertura forestal y estimar el nivel de riesgo asociado**.
+La visión de FireRiskAI se basa en una **estrategia de datos sólida**, fundamental para el desarrollo de un modelo de *machine learning* de alto rendimiento y confiabilidad, orientado a la toma de decisiones ambientales más precisas y sostenibles.
+
+
 
 ## 🎯 Características Principales
 
@@ -228,10 +233,28 @@ Este proyecto está bajo la Licencia MIT. Ver `LICENSE` para más detalles.
 - **Rol 3:** Análisis de Riesgo de Incendios
 - **Rol 4:** Evaluación de Modelos
 
+
+## 👩‍💻 Contribuyentes
+
+| Nombre | GitHub | LinkedIn |
+|--------|--------|----------|
+| **[Alfonso Bermúdez Torres]** | [![GitHub](https://img.shields.io/badge/GitHub-181717?logo=github&logoColor=white)]([https://github.com/GHalfbbt]) | [![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?logo=linkedin&logoColor=white)]([https://www.linkedin.com/in/alfonsobermudeztorres/]]) |
+| **[Bárbara Sánchez Urbano ]** | [![GitHub](https://img.shields.io/badge/GitHub-181717?logo=github&logoColor=white)]([https://github.com/Barbarasanchez11]) | [![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?logo=linkedin&logoColor=white)]([https://github.com/Barbarasanchez11]) |
+| **[Bunty Nanwani]** | [![GitHub](https://img.shields.io/badge/GitHub-181717?logo=github&logoColor=white)]([https://www.linkedin.com/in/buntynanwani/]) | [![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?logo=linkedin&logoColor=white)]([https://www.linkedin.com/in/buntynanwani/]) |
+| **[Aroa Mateo Gómez]** | [![GitHub](https://img.shields.io/badge/GitHub-181717?logo=github&logoColor=white)]([https://github.com/Arowi95]) | [![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?logo=linkedin&logoColor=white)]([https://www.linkedin.com/in/aroamateogomez/]) |
+
+
+
 ## 📞 Contacto
 
 Para preguntas o sugerencias, por favor contacta al equipo de desarrollo.
 
 ---
 
-**FireRiskAI** - Predicción inteligente de riesgo de incendios forestales 🌲🔥
+
+<div align="center">
+
+*Desarrollado con ❤️ usando Python y Streamlit*
+
+</div>
+

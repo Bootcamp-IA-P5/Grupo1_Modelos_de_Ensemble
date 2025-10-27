@@ -106,7 +106,7 @@ async def predict(req: PredictRequest):
     # Obtener nombre de clase y riesgo
     risk_info = _risk_mapping.get(y_pred, {"level": "UNKNOWN", "score": 0, "name": f"Class_{y_pred}"})
     class_name = risk_info["name"]
-    
+
     confidence = float(max(proba)) if proba is not None else 1.0
     processing_time = (time.time() - start_time) * 1000  # en milisegundos
 

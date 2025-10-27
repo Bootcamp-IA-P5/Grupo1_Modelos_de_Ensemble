@@ -25,7 +25,11 @@ class DatabaseServiceUniversal:
         self.db_name = os.getenv("DB_NAME", "ensemble_models")
         self.os_name = platform.system().lower()
         
+<<<<<<< HEAD
+        logger.info(f"🔧 DatabaseServiceUniversal inicializado para: {self.db_name} en {self.os_name}")
+=======
         logger.info(f" DatabaseServiceUniversal inicializado para: {self.db_name} en {self.os_name}")
+>>>>>>> feature/external-apis
     
     def _get_ssl_config(self):
         """
