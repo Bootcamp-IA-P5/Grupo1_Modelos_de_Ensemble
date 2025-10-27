@@ -11,6 +11,7 @@ import plotly.express as px
 import numpy as np
 from datetime import datetime
 import time
+import os
 
 # Configuración de la página
 st.set_page_config(
@@ -19,13 +20,13 @@ st.set_page_config(
     layout="wide"
 )
 
-# URL base del backend - leer desde secrets si está en Streamlit Cloud
+# URL base del backend - leer desde variable de entorno o secrets
 try:
     # Intentar leer desde secrets de Streamlit Cloud
     BASE_URL = st.secrets["Backend"]["BASE_URL"]
 except (KeyError, FileNotFoundError):
-    # Fallback a localhost si no hay secrets (desarrollo local)
-    BASE_URL = "http://localhost:8000"
+    # Intentar leer desde variable de entorno (para Render)
+    BASE_URL = os.getenv("BASE_URL", "http://localhost:8000")
 
 # Título principal
 st.title("🔥 FireRiskAI - Dashboard de Monitoreo")
