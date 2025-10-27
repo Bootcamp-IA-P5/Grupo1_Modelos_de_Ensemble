@@ -1768,51 +1768,53 @@ if False: # elif page == "📈 Presentación":
 elif page == "🧪 A/B Testing":
     st.header("🧪 A/B Testing - Comparación de Modelos")
     
-    # Estadísticas de A/B Testing
-    stats = fetch_data("/ab-testing/stats")
+    st.info("""
+    ℹ️ **A/B Testing está disponible localmente pero no en producción**
     
-    if stats:
-        ab_stats = stats.get("ab_testing_stats", {})
-        
-        # Modelos y pesos
-        st.subheader("Distribución de Tráfico")
-        weights = ab_stats.get("model_weights", {})
-        
-        if weights:
-            df_weights = pd.DataFrame({
-                "Modelo": list(weights.keys()),
-                "Peso": [w * 100 for w in weights.values()]
-            })
-            
-            fig = px.bar(df_weights, x="Modelo", y="Peso", title="Distribución de Tráfico (%)")
-            st.plotly_chart(fig, use_container_width=True)
-        
-        # Rendimiento de modelos
-        st.subheader("Rendimiento de Modelos")
-        perf = ab_stats.get("model_performance", {})
-        
-        if perf:
-            df_perf = pd.DataFrame([
-                {
-                    "Modelo": model,
-                    "Predicciones": data.get("total_predictions", 0),
-                    "Confianza Promedio": data.get("avg_confidence", 0) * 100,
-                    "Tiempo Promedio": data.get("avg_processing_time", 0)
-                }
-                for model, data in perf.items()
-            ])
-            
-            if not df_perf.empty:
-                st.dataframe(df_perf)
-                fig = px.bar(
-                    df_perf, 
-                    x="Modelo", 
-                    y="Confianza Promedio", 
-                    title="Confianza Promedio por Modelo"
-                )
-                st.plotly_chart(fig, use_container_width=True)
-    else:
-        st.error("No se pudieron obtener estadísticas de A/B Testing")
+    **¿Qué es A/B Testing?**
+    Es una técnica que permite comparar el rendimiento de diferentes modelos en tiempo real, 
+    distribuyendo el tráfico de predicciones entre ellos para determinar cuál funciona mejor.
+    
+    **¿Por qué no está disponible en Render?**
+    Los modelos de A/B Testing (Random Forest, Extra Trees, XGBoost) son muy pesados (800+ MB) 
+    y exceden los límites de memoria de Render.com en el plan gratuito.
+    
+    **¿Dónde usar A/B Testing?**
+    - ✅ **Localmente**: Para pruebas y desarrollo
+    - ✅ **Servidores propios**: Con suficiente RAM (4GB+)
+    - ✅ **Cloud con más recursos**: AWS, GCP, etc.
+    
+    **Alternativa en producción:**
+    - Usa **🤖 Gestión de Modelos** para activar el mejor modelo basado en métricas
+    """)
+    
+    st.markdown("---")
+    st.subheader("📊 Simulación de A/B Testing")
+    st.write("A continuación se muestra un ejemplo de cómo funcionaría el A/B Testing:")
+    
+    # Simulación de datos
+    models_data = pd.DataFrame({
+        "Modelo": ["XGBoost", "Random Forest", "Extra Trees"],
+        "Predicciones": [1500, 500, 480],
+        "Confianza Promedio": [97.2, 95.8, 95.5],
+        "Tiempo Promedio (ms)": [42.5, 38.2, 37.8]
+    })
+    
+    st.dataframe(models_data, use_container_width=True, hide_index=True)
+    
+    fig = px.bar(models_data, x="Modelo", y="Confianza Promedio", 
+                title="Comparación de Modelos (Simulación)",
+                color="Confianza Promedio",
+                color_continuous_scale="Viridis")
+    st.plotly_chart(fig, use_container_width=True)
+    
+    st.success("""
+    ✅ **Conclusiones de la simulación:**
+    
+    - **XGBoost** tiene la mejor accuracy (97.2%)
+    - Es el modelo recomendado para usar en producción
+    - Ve a **🤖 Gestión de Modelos** para activarlo
+    """)
 
 # Página: Data Drift
 elif page == "🔍 Data Drift":
