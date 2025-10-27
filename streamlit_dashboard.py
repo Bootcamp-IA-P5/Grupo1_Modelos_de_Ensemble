@@ -323,7 +323,7 @@ elif page == "🔮 Predicción":
                             
                             fig = px.bar(df_probs, x="Clase", y="Probabilidad", 
                                         title="Probabilidades por Clase de Vegetación")
-                            st.plotly_chart(fig, use_container_width=True)
+                            st.plotly_chart(fig, width='stretch')
                     
                     else:
                         st.error(f"Error en la predicción: {response.text}")
@@ -384,13 +384,13 @@ elif page == "📊 EDA":
                         color="Cantidad",
                         color_continuous_scale="Greens")
             fig.update_xaxes(tickangle=45)
-            st.plotly_chart(fig, use_container_width=True)
+            st.plotly_chart(fig, width='stretch')
         
         with col2:
             # Gráfico pie
             fig = px.pie(df_dist, values="Cantidad", names="Clase",
                         title="Proporción de Clases en el Dataset")
-            st.plotly_chart(fig, use_container_width=True)
+            st.plotly_chart(fig, width='stretch')
         
         # Histograma de features importantes
         st.markdown("---")
@@ -413,7 +413,7 @@ elif page == "📊 EDA":
                 nbins=50,
                 title="Distribución de Elevación por Clase"
             )
-            st.plotly_chart(fig, use_container_width=True)
+            st.plotly_chart(fig, width='stretch')
     
     with tab2:
         st.subheader("Análisis de Correlación")
@@ -435,7 +435,7 @@ elif page == "📊 EDA":
         fig = px.imshow(df_corr, labels=dict(color="Correlación"),
                        title="Matriz de Correlación entre Features",
                        color_continuous_scale="RdBu_r")
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width='stretch')
         
         # Box plots comparativos
         st.markdown("---")
@@ -459,7 +459,7 @@ elif page == "📊 EDA":
         fig = px.box(df_box, x="Clase", y="Valor", 
                     title=f"Distribución de {feature_box} por Clase")
         fig.update_xaxes(tickangle=45)
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width='stretch')
         
         # Análisis de outliers
         st.markdown("---")
@@ -490,7 +490,7 @@ elif page == "📊 EDA":
         }
         
         df_stats = pd.DataFrame(statistics_data)
-        st.dataframe(df_stats, use_container_width=True, hide_index=True)
+        st.dataframe(df_stats, width='stretch', hide_index=True)
         
         # Estadísticas generales
         st.markdown("---")
@@ -559,7 +559,7 @@ elif page == "🤖 Modelo":
             df_metrics = pd.DataFrame(metrics_data)
             
             # Mostrar tabla
-            st.dataframe(df_metrics, use_container_width=True, hide_index=True)
+            st.dataframe(df_metrics, width='stretch', hide_index=True)
             
             # Gráficos de métricas
             col1, col2 = st.columns(2)
@@ -570,7 +570,7 @@ elif page == "🤖 Modelo":
                             color="Precision",
                             color_continuous_scale="Blues")
                 fig.update_xaxes(tickangle=45)
-                st.plotly_chart(fig, use_container_width=True)
+                st.plotly_chart(fig, width='stretch')
             
             with col2:
                 fig = px.bar(df_metrics, x="Clase", y="Recall", 
@@ -578,7 +578,7 @@ elif page == "🤖 Modelo":
                             color="Recall",
                             color_continuous_scale="Greens")
                 fig.update_xaxes(tickangle=45)
-                st.plotly_chart(fig, use_container_width=True)
+                st.plotly_chart(fig, width='stretch')
             
             # Classification Report
             st.markdown("---")
@@ -628,7 +628,7 @@ elif page == "🤖 Modelo":
                         labels={"Importance": "Importancia", "Feature": "Característica"},
                         color="Importance",
                         color_continuous_scale="Viridis")
-            st.plotly_chart(fig, use_container_width=True)
+            st.plotly_chart(fig, width='stretch')
             
             # Insights
             st.markdown("---")
@@ -675,7 +675,7 @@ elif page == "🤖 Modelo":
                 width=800,
                 height=700
             )
-            st.plotly_chart(fig, use_container_width=True)
+            st.plotly_chart(fig, width='stretch')
             
             # Interpretación
             st.markdown("---")
@@ -755,7 +755,7 @@ elif page == "🤖 Modelo":
                         barmode='group',
                         title="Comparación Train vs Validation",
                         labels={"value": "Score", "variable": "Dataset"})
-            st.plotly_chart(fig, use_container_width=True)
+            st.plotly_chart(fig, width='stretch')
             
             # Análisis de overfitting
             st.markdown("---")
@@ -827,7 +827,7 @@ elif page == "🔄 Reentrenamiento":
         fig = px.line(df_temporal, x="Fecha", y="Predicciones",
                      title="Predicciones Diarias (Últimos 30 días)",
                      markers=True)
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width='stretch')
         
         # Distribución por clase
         class_names = ["Spruce/Fir", "Lodgepole Pine", "Ponderosa Pine", 
@@ -839,7 +839,7 @@ elif page == "🔄 Reentrenamiento":
                     title="Predicciones por Clase",
                     labels={"x": "Clase", "y": "Número de Predicciones"})
         fig.update_xaxes(tickangle=45)
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width='stretch')
     
     with tab2:
         st.subheader("Análisis de Calidad del Modelo")
@@ -868,14 +868,14 @@ elif page == "🔄 Reentrenamiento":
             "Diferencia": [-2.57, -2.6, -2.5, -2.5]
         })
         
-        st.dataframe(comparison_retrain, use_container_width=True, hide_index=True)
+        st.dataframe(comparison_retrain, width='stretch', hide_index=True)
         
         # Gráfico de comparación
         fig = px.bar(comparison_retrain, x="Métrica", y=["Modelo Original", "Modelo Actual"],
                     barmode='group',
                     title="Comparación Modelo Original vs Actual",
                     labels={"value": "Score (%)", "variable": "Modelo"})
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width='stretch')
     
     with tab3:
         st.subheader("🔄 Acciones de Reentrenamiento")
@@ -966,7 +966,7 @@ elif page == "🔄 Reentrenamiento":
                     })
                 
                 df_ab = pd.DataFrame(models_data)
-                st.dataframe(df_ab, use_container_width=True, hide_index=True)
+                st.dataframe(df_ab, width='stretch', hide_index=True)
                 
                 # Botón para ver detalles
                 if st.button("Ver detalles de A/B Testing"):
@@ -1266,7 +1266,7 @@ elif page == "📚 Documentación":
             "Score": [2, 8, 5, 1, 4, 6, 9]
         })
         
-        st.dataframe(risk_mapping, use_container_width=True, hide_index=True)
+        st.dataframe(risk_mapping, width='stretch', hide_index=True)
         
         st.info("""
         💡 **Interpretación:**
@@ -1291,7 +1291,7 @@ elif page == "ℹ️ Acerca del Proyecto":
     
     
     
-    # st.dataframe(team_info, use_container_width=True, hide_index=True)  # Comentado - agregar info del equipo si es necesario
+    # st.dataframe(team_info, width='stretch', hide_index=True)  # Comentado - agregar info del equipo si es necesario
     
     st.info("""
     💡 **Nota**: Agrega aquí la información de tu equipo si deseas mostrarla.
@@ -1434,7 +1434,7 @@ elif page == "ℹ️ Acerca del Proyecto":
         ]
     })
     
-    st.dataframe(stack, use_container_width=True, hide_index=True)
+    st.dataframe(stack, width='stretch', hide_index=True)
     
     # Estado del proyecto
     st.markdown("---")
@@ -1582,7 +1582,7 @@ if False: # elif page == "📊 Métricas":
             width=700,
             height=600
         )
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width='stretch')
         
         # Interpretación
         st.markdown("""
@@ -1742,7 +1742,7 @@ elif page == "🧪 A/B Testing":
             })
             
             fig = px.bar(df_weights, x="Modelo", y="Peso", title="Distribución de Tráfico (%)")
-            st.plotly_chart(fig, use_container_width=True)
+            st.plotly_chart(fig, width='stretch')
         
         # Rendimiento de modelos
         st.subheader("Rendimiento de Modelos")
@@ -1767,7 +1767,7 @@ elif page == "🧪 A/B Testing":
                     y="Confianza Promedio", 
                     title="Confianza Promedio por Modelo"
                 )
-                st.plotly_chart(fig, use_container_width=True)
+                st.plotly_chart(fig, width='stretch')
     else:
         st.error("No se pudieron obtener estadísticas de A/B Testing")
 
@@ -1913,7 +1913,7 @@ elif page == "🤖 Gestión Modelos":
                 for model, stats in model_stats.items()
             ])
             
-            st.dataframe(df_stats, use_container_width=True, hide_index=True)
+            st.dataframe(df_stats, width='stretch', hide_index=True)
             
             # Gráfico de comparación
             df_comparison = pd.DataFrame([
@@ -1932,7 +1932,7 @@ elif page == "🤖 Gestión Modelos":
                 color="Accuracy",
                 color_continuous_scale="Greens"
             )
-            st.plotly_chart(fig, use_container_width=True)
+            st.plotly_chart(fig, width='stretch')
         
         # Botón para reemplazar modelo
         st.markdown("---")
