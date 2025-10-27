@@ -1287,26 +1287,9 @@ elif page == "ℹ️ Acerca del Proyecto":
     #### **Sistema Inteligente de Clasificación de Vegetación Forestal**
     """)
     
-    # Equipo de desarrollo
-    st.markdown("---")
-    st.subheader("👥 Equipo de Desarrollo")
+
     
-    st.markdown("""
-    Este proyecto ha sido desarrollado como parte del **Bootcamp IA** del Grupo 1.
     
-    ### **Equipo:**
-    """)
-    
-    # Información del equipo (simulada - actualizar con datos reales)
-    team_info = pd.DataFrame({
-        "Nombre": ["[Nombre]", "[Nombre]", "[Nombre]"],
-        "Rol": ["ML Engineer", "Backend Developer", "Frontend Developer"],
-        "Responsabilidad": [
-            "Entrenamiento y optimización de modelos",
-            "API y base de datos",
-            "Interfaz de usuario"
-        ]
-    })
     
     st.dataframe(team_info, use_container_width=True, hide_index=True)
     
@@ -1475,7 +1458,7 @@ elif page == "ℹ️ Acerca del Proyecto":
     st.markdown("""
     Este proyecto fue desarrollado con fines educativos como parte del Bootcamp IA.
     
-    **© 2024 Grupo 1 - FireRiskAI**
+    **© 2025 Grupo 1 - FireRiskAI**
     """)
 
 # (Old pages removed to simplify menu)
