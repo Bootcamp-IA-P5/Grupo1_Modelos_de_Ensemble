@@ -398,18 +398,85 @@ elif page == "📊 EDA":
                         title="Proporción de Clases en el Dataset")
             st.plotly_chart(fig, use_container_width=True)
         
-        # EDA Insights adicionales
+
+        # Histograma de features importantes
         st.markdown("---")
-        st.subheader("💡 Insights Clave")
+        st.subheader("Histograma de Features Importantes")
         
-        st.info("""
-        📊 **Análisis de la Distribución:**
+        feature_to_plot = st.selectbox(
+            "Selecciona una feature:",
+            ["Elevación", "Pendiente", "Distancia a Hidrología", "Hillshade"]
+        )
         
-        - **Dataset desbalanceado**: Lodgepole Pine y Spruce/Fir dominan (85% del total)
-        - **Clases minoritarias**: Cottonwood/Willow (<1%) requiere class_weight
-        - **Implicaciones**: XGBoost maneja bien el desbalance con class_weight='balanced'
-        - **Separación de clases**: Suficiente para alta accuracy (97%)
-        """)
+        # Datos simulados realistas para todas las features
+        np.random.seed(42)
+        
+        if feature_to_plot == "Elevación":
+            data = pd.DataFrame({
+                "Elevación": np.concatenate([
+                    np.random.normal(2500, 400, 4000),  # Lodgepole Pine
+                    np.random.normal(2400, 450, 3000),  # Spruce/Fir
+                    np.random.normal(2000, 420, 500),   # Ponderosa Pine
+                    np.random.normal(1800, 500, 50),    # Cottonwood/Willow
+                    np.random.normal(2500, 400, 150),   # Aspen
+                    np.random.normal(2200, 380, 300),   # Douglas-fir
+                    np.random.normal(3100, 500, 350)    # Krummholz
+                ]),
+                "Clase": ["Lodgepole Pine"]*4000 + ["Spruce/Fir"]*3000 + ["Ponderosa Pine"]*500 + 
+                         ["Cottonwood/Willow"]*50 + ["Aspen"]*150 + ["Douglas-fir"]*300 + ["Krummholz"]*350
+            })
+            fig = px.histogram(data, x="Elevación", color="Clase", nbins=50,
+                             title="Distribución de Elevación por Clase")
+        elif feature_to_plot == "Pendiente":
+            data = pd.DataFrame({
+                "Pendiente": np.concatenate([
+                    np.random.normal(18, 5, 4000),   # Lodgepole Pine
+                    np.random.normal(16, 5, 3000),   # Spruce/Fir
+                    np.random.normal(22, 6, 500),    # Ponderosa Pine
+                    np.random.normal(12, 4, 50),     # Cottonwood/Willow
+                    np.random.normal(17, 5, 150),   # Aspen
+                    np.random.normal(19, 5, 300),   # Douglas-fir
+                    np.random.normal(24, 6, 350)     # Krummholz
+                ]),
+                "Clase": ["Lodgepole Pine"]*4000 + ["Spruce/Fir"]*3000 + ["Ponderosa Pine"]*500 + 
+                         ["Cottonwood/Willow"]*50 + ["Aspen"]*150 + ["Douglas-fir"]*300 + ["Krummholz"]*350
+            })
+            fig = px.histogram(data, x="Pendiente", color="Clase", nbins=40,
+                             title="Distribución de Pendiente por Clase")
+        elif feature_to_plot == "Distancia a Hidrología":
+            data = pd.DataFrame({
+                "Distancia a Hidrología": np.concatenate([
+                    np.random.normal(650, 200, 4000),  # Lodgepole Pine
+                    np.random.normal(800, 250, 3000),  # Spruce/Fir
+                    np.random.normal(950, 280, 500),   # Ponderosa Pine
+                    np.random.normal(1200, 300, 50),  # Cottonwood/Willow
+                    np.random.normal(700, 200, 150),  # Aspen
+                    np.random.normal(850, 250, 300),  # Douglas-fir
+                    np.random.normal(550, 180, 350)    # Krummholz
+                ]),
+                "Clase": ["Lodgepole Pine"]*4000 + ["Spruce/Fir"]*3000 + ["Ponderosa Pine"]*500 + 
+                         ["Cottonwood/Willow"]*50 + ["Aspen"]*150 + ["Douglas-fir"]*300 + ["Krummholz"]*350
+            })
+            fig = px.histogram(data, x="Distancia a Hidrología", color="Clase", nbins=40,
+                             title="Distribución de Distancia a Hidrología por Clase")
+        elif feature_to_plot == "Hillshade":
+            data = pd.DataFrame({
+                "Hillshade": np.concatenate([
+                    np.random.normal(220, 15, 4000),  # Lodgepole Pine
+                    np.random.normal(225, 15, 3000),  # Spruce/Fir
+                    np.random.normal(210, 18, 500),   # Ponderosa Pine
+                    np.random.normal(215, 12, 50),    # Cottonwood/Willow
+                    np.random.normal(230, 14, 150),  # Aspen
+                    np.random.normal(218, 16, 300),  # Douglas-fir
+                    np.random.normal(200, 20, 350)    # Krummholz
+                ]),
+                "Clase": ["Lodgepole Pine"]*4000 + ["Spruce/Fir"]*3000 + ["Ponderosa Pine"]*500 + 
+                         ["Cottonwood/Willow"]*50 + ["Aspen"]*150 + ["Douglas-fir"]*300 + ["Krummholz"]*350
+            })
+            fig = px.histogram(data, x="Hillshade", color="Clase", nbins=40,
+                             title="Distribución de Hillshade (Sombra Solar) por Clase")
+        
+        st.plotly_chart(fig, use_container_width=True)
     
     with tab2:
         st.subheader("Análisis de Correlación")
@@ -893,49 +960,29 @@ elif page == "🔄 Reentrenamiento":
                      delta_color="normal")
             st.metric("Tiempo de Entrenamiento", "~45 min", help="Tiempo estimado")
         
-        # Botón de reentrenamiento
+        # Información sobre reentrenamiento (sin permitir acceso público)
         st.markdown("---")
-        st.subheader("Lanzar Reentrenamiento")
+        st.subheader("ℹ️ Sobre el Reentrenamiento")
         
-        st.info("""
-        💡 El reentrenamiento creará un nuevo modelo usando los datos recolectados 
-        desde que se lanzó el modelo actual. Asegúrate de tener suficientes datos.
+        st.warning("""
+        ⚠️ **Acceso restringido**: El reentrenamiento de modelos es una operación crítica 
+        que solo debe ser realizada por administradores del sistema.
+        
+        **¿Qué hace el reentrenamiento?**
+        - Recoge nuevos datos de predicciones y feedback
+        - Entrena un nuevo modelo con datos actualizados
+        - Compara rendimiento con el modelo actual
+        - Puede reemplazar el modelo si es mejor (via Auto-Reemplazo)
+        
+        **¿Cuando se reentrena?**
+        - Cuando se han recolectado suficientes datos nuevos (10,000+ predicciones)
+        - Cuando el accuracy del modelo cae por debajo de 95%
+        - Cuando hay detección de data drift significativo
+        
+        **¿Dónde se usa Auto-Reemplazo?**
+        - Ve a la sección "🤖 Gestión Modelos" para ver y activar el mejor modelo disponible
+        - Se recomienda después de comparar modelos en A/B Testing
         """)
-        
-        col1, col2 = st.columns(2)
-        
-        with col1:
-            new_data_count = st.number_input(
-                "Mínimo de muestras nuevas requeridas",
-                min_value=1000,
-                max_value=50000,
-                value=5000,
-                step=1000
-            )
-        
-        with col2:
-            validation_split = st.slider(
-                "Validation Split (%)",
-                min_value=10,
-                max_value=40,
-                value=20,
-                step=5
-            )
-        
-        if st.button("🚀 Lanzar Reentrenamiento", type="primary"):
-            # Simulación de proceso
-            with st.spinner("Entrenando nuevo modelo..."):
-                import time
-                progress_bar = st.progress(0)
-                status_text = st.empty()
-                
-                for i in range(100):
-                    time.sleep(0.05)
-                    progress_bar.progress(i + 1)
-                    status_text.text(f"Procesando: {i+1}%")
-                
-                st.success("✅ Modelo reentrenado exitosamente!")
-                st.info("💡 El nuevo modelo está listo para deployment. Revisa las métricas en la sección de A/B Testing.")
         
         # Resultados de A/B Testing (si está implementado)
         st.markdown("---")
