@@ -390,7 +390,7 @@ elif page == "📊 EDA":
                         color="Cantidad",
                         color_continuous_scale="Greens")
             fig.update_xaxes(tickangle=45)
-            st.plotly_chart(fig, width='stretch')
+            st.plotly_chart(fig, width='stretch', config={'displayModeBar': True})
         
         with col2:
             # Gráfico pie
@@ -398,28 +398,18 @@ elif page == "📊 EDA":
                         title="Proporción de Clases en el Dataset")
             st.plotly_chart(fig, width='stretch')
         
-        # Histograma de features importantes
+        # EDA Insights adicionales
         st.markdown("---")
-        st.subheader("Histograma de Features Importantes")
+        st.subheader("💡 Insights Clave")
         
-        feature_to_plot = st.selectbox(
-            "Selecciona una feature:",
-            ["Elevación", "Pendiente", "Distancia a Hidrología", "Hillshade"]
-        )
+        st.info("""
+        📊 **Análisis de la Distribución:**
         
-        # Simulación de histogramas por clase
-        if feature_to_plot == "Elevación":
-            fig = px.histogram(
-                pd.DataFrame({
-                    "Elevación": np.random.normal(2500, 500, 10000),
-                    "Clase": np.random.choice(class_names, 10000)
-                }),
-                x="Elevación",
-                color="Clase",
-                nbins=50,
-                title="Distribución de Elevación por Clase"
-            )
-            st.plotly_chart(fig, width='stretch')
+        - **Dataset desbalanceado**: Lodgepole Pine y Spruce/Fir dominan (85% del total)
+        - **Clases minoritarias**: Cottonwood/Willow (<1%) requiere class_weight
+        - **Implicaciones**: XGBoost maneja bien el desbalance con class_weight='balanced'
+        - **Separación de clases**: Suficiente para alta accuracy (97%)
+        """)
     
     with tab2:
         st.subheader("Análisis de Correlación")
