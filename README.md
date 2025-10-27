@@ -1,17 +1,12 @@
 
-
 # 🔥 FireRiskAI - Sistema de Predicción de Riesgo de Incendios Forestales
 
 ## 📋 Descripción del Proyecto
 
-Este proyecto es el desarrollo de **FireRiskAI Web Application**, una solución basada en **clasificación multiclase** que tiene como objetivo resolver un problema real. La visión del proyecto está directamente ligada a una estrategia de datos robusta, clave para la construcción de un modelo de Machine Learning de alto rendimiento.
 
-=======
-# 🔥 FireRiskAI - Sistema de Predicción de Riesgo de Incendios Forestales
+FireRiskAI es una aplicación web impulsada por inteligencia artificial que combina **clasificación multiclase** y análisis predictivo para abordar un problema real: **la evaluación del riesgo de incendios forestales**. El sistema utiliza un modelo **XGBoost optimizado**, entrenado con el **Forest Cover Type Dataset** del UCI Machine Learning Repository, para **predecir el tipo de cobertura forestal y estimar el nivel de riesgo asociado**.
+La visión de FireRiskAI se basa en una **estrategia de datos sólida**, fundamental para el desarrollo de un modelo de *machine learning* de alto rendimiento y confiabilidad, orientado a la toma de decisiones ambientales más precisas y sostenibles.
 
-## 📋 Descripción del Proyecto
-
-FireRiskAI es un sistema de machine learning que predice el tipo de cobertura forestal y evalúa el riesgo de incendio asociado. Utiliza un modelo XGBoost optimizado entrenado con el Forest Cover Type Dataset de UCI ML Repository.
 
 
 ## 🎯 Características Principales
@@ -250,8 +245,6 @@ Este proyecto está bajo la Licencia MIT. Ver `LICENSE` para más detalles.
 
 
 
-
-=======
 ## 📞 Contacto
 
 Para preguntas o sugerencias, por favor contacta al equipo de desarrollo.
