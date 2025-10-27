@@ -19,8 +19,13 @@ st.set_page_config(
     layout="wide"
 )
 
-# URL base del backend
-BASE_URL = "http://localhost:8000"
+# URL base del backend - leer desde secrets si está en Streamlit Cloud
+try:
+    # Intentar leer desde secrets de Streamlit Cloud
+    BASE_URL = st.secrets["Backend"]["BASE_URL"]
+except (KeyError, FileNotFoundError):
+    # Fallback a localhost si no hay secrets (desarrollo local)
+    BASE_URL = "http://localhost:8000"
 
 # Título principal
 st.title("🔥 FireRiskAI - Dashboard de Monitoreo")
