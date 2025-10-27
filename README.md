@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 🔥 FireRiskAI - Sistema de Predicción de Riesgo de Incendios Forestales
 
 ## 📋 Descripción del Proyecto
@@ -248,6 +249,6 @@ Para preguntas o sugerencias, por favor contacta al equipo de desarrollo.
 
 <div align="center">
 
-*Desarrollado con ❤️ usando Python*
+*Desarrollado con ❤️ usando Python y Streamlit*
 
 </div>
