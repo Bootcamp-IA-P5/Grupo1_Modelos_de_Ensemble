@@ -272,7 +272,7 @@ elif page == "🔮 Predicción":
                     response = requests.post(
                         f"{BASE_URL}/predict",
                         json={"features": features},
-                        timeout=30
+                        timeout=120  # Aumentado a 120 segundos para cargar modelo
                     )
                     
                     if response.status_code == 200:
