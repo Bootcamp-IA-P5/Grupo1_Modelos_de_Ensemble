@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 
 # 🔥 FireRiskAI - Sistema de Predicción de Riesgo de Incendios Forestales
 
@@ -13,7 +13,7 @@ Este proyecto es el desarrollo de **FireRiskAI Web Application**, una solución 
 
 FireRiskAI es un sistema de machine learning que predice el tipo de cobertura forestal y evalúa el riesgo de incendio asociado. Utiliza un modelo XGBoost optimizado entrenado con el Forest Cover Type Dataset de UCI ML Repository.
 
->>>>>>> origin/development
+
 ## 🎯 Características Principales
 
 - **Clasificación de 7 tipos de bosque** con 97.07% de precisión
@@ -238,7 +238,7 @@ Este proyecto está bajo la Licencia MIT. Ver `LICENSE` para más detalles.
 - **Rol 3:** Análisis de Riesgo de Incendios
 - **Rol 4:** Evaluación de Modelos
 
-<<<<<<< HEAD
+
 ## 👩‍💻 Contribuyentes
 
 | Nombre | GitHub | LinkedIn |
@@ -252,19 +252,16 @@ Este proyecto está bajo la Licencia MIT. Ver `LICENSE` para más detalles.
 
 
 =======
->>>>>>> origin/development
 ## 📞 Contacto
 
 Para preguntas o sugerencias, por favor contacta al equipo de desarrollo.
 
 ---
 
-<<<<<<< HEAD
+
 <div align="center">
 
 *Desarrollado con ❤️ usando Python y Streamlit*
 
 </div>
-=======
-**FireRiskAI** - Predicción inteligente de riesgo de incendios forestales 🌲🔥
->>>>>>> origin/development
+
