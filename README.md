@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # 🔥 FireRiskAI - Sistema de Predicción de Riesgo de Incendios Forestales
 
 ## 📋 Descripción del Proyecto
