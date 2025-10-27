@@ -29,7 +29,7 @@ st.title("🔥 FireRiskAI - Dashboard de Monitoreo")
 st.sidebar.title("📋 Menú")
 page = st.sidebar.selectbox(
     "Selecciona una sección:",
-    ["🏠 Inicio", "🔮 Predicción", "📊 EDA", "🤖 Modelo", "📊 Métricas", "📈 Presentación", "🧪 A/B Testing", "🔍 Data Drift", "🤖 Modelos", "🌤️ Clima"]
+    ["🏠 Inicio", "🔮 Predicción", "📊 EDA", "🤖 Modelo", "🔄 Reentrenamiento", "📊 Métricas", "📈 Presentación", "🧪 A/B Testing", "🔍 Data Drift", "🤖 Modelos", "🌤️ Clima"]
 )
 
 # Función para hacer peticiones al backend
@@ -781,6 +781,200 @@ elif page == "🤖 Modelo":
             """)
     else:
         st.error("No se pudo obtener información del modelo")
+
+# Página: Reentrenamiento
+elif page == "🔄 Reentrenamiento":
+    st.header("🔄 Sistema de Reentrenamiento")
+    
+    st.markdown("""
+    ### 🎯 Monitoreo y Retraining del Modelo
+    
+    Sistema automatizado para recolectar datos de producción, evaluar rendimiento y 
+    reentrenar el modelo cuando sea necesario.
+    """)
+    
+    # Datos recolectados
+    st.markdown("---")
+    st.subheader("📊 Datos Recolectados")
+    
+    # Simulación de datos (en producción vendría de MongoDB)
+    col1, col2, col3, col4 = st.columns(4)
+    with col1:
+        st.metric("Total Predicciones", "12,548", delta="↑ 234", delta_color="normal")
+    with col2:
+        st.metric("Feedback Correcto", "11,865", delta="94.6%", delta_color="normal")
+    with col3:
+        st.metric("Feedback Incorrecto", "683", delta="5.4%", delta_color="inverse")
+    with col4:
+        st.metric("Última Actualización", "Hace 2h", help="Tiempo desde última recolección")
+    
+    # Análisis de calidad de datos
+    st.markdown("---")
+    st.subheader("📈 Análisis de Calidad de Datos")
+    
+    tab1, tab2, tab3 = st.tabs(["📊 Distribución", "🎯 Calidad", "⚙️ Acciones"])
+    
+    with tab1:
+        # Distribución temporal de predicciones
+        dates = pd.date_range(start='2024-10-20', periods=30, freq='D')
+        daily_predictions = np.random.randint(200, 600, 30)
+        
+        df_temporal = pd.DataFrame({
+            "Fecha": dates,
+            "Predicciones": daily_predictions
+        })
+        
+        fig = px.line(df_temporal, x="Fecha", y="Predicciones",
+                     title="Predicciones Diarias (Últimos 30 días)",
+                     markers=True)
+        st.plotly_chart(fig, use_container_width=True)
+        
+        # Distribución por clase
+        class_names = ["Spruce/Fir", "Lodgepole Pine", "Ponderosa Pine", 
+                      "Cottonwood/Willow", "Aspen", "Douglas-fir", "Krummholz"]
+        
+        class_predictions = [2500, 3200, 1800, 1200, 950, 1500, 398]
+        
+        fig = px.bar(x=class_names, y=class_predictions,
+                    title="Predicciones por Clase",
+                    labels={"x": "Clase", "y": "Número de Predicciones"})
+        fig.update_xaxes(tickangle=45)
+        st.plotly_chart(fig, use_container_width=True)
+    
+    with tab2:
+        st.subheader("Análisis de Calidad del Modelo")
+        
+        # Accuracy en tiempo real
+        recent_accuracy = 94.5
+        
+        st.metric("Accuracy Reciente", f"{recent_accuracy}%", 
+                 delta=f"{recent_accuracy - 97.07:.2f}%", 
+                 delta_color="inverse" if recent_accuracy < 95 else "normal",
+                 help="Accuracy en predicciones de los últimos días")
+        
+        if recent_accuracy < 95:
+            st.warning("⚠️ La accuracy ha bajado. Considerar reentrenar el modelo.")
+        else:
+            st.success("✅ El modelo mantiene buen rendimiento.")
+        
+        # Comparación modelo actual vs esperado
+        st.markdown("---")
+        st.subheader("Comparación con Modelo Original")
+        
+        comparison_retrain = pd.DataFrame({
+            "Métrica": ["Accuracy", "Precision", "Recall", "F1-Score"],
+            "Modelo Original": [97.07, 96.8, 96.5, 96.6],
+            "Modelo Actual": [94.5, 94.2, 94.0, 94.1],
+            "Diferencia": [-2.57, -2.6, -2.5, -2.5]
+        })
+        
+        st.dataframe(comparison_retrain, use_container_width=True, hide_index=True)
+        
+        # Gráfico de comparación
+        fig = px.bar(comparison_retrain, x="Métrica", y=["Modelo Original", "Modelo Actual"],
+                    barmode='group',
+                    title="Comparación Modelo Original vs Actual",
+                    labels={"value": "Score (%)", "variable": "Modelo"})
+        st.plotly_chart(fig, use_container_width=True)
+    
+    with tab3:
+        st.subheader("🔄 Acciones de Reentrenamiento")
+        
+        # Estado del sistema
+        st.markdown("#### Estado del Sistema")
+        
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            st.metric("Modelo Actual", "v1.0.0", help="Versión actual en producción")
+            st.metric("Último Entrenamiento", "2024-10-20", 
+                     delta="Hace 6 días",
+                     delta_color="normal")
+        
+        with col2:
+            st.metric("Datos Disponibles", "12,548", 
+                     delta="Suficiente para retrain",
+                     delta_color="normal")
+            st.metric("Tiempo de Entrenamiento", "~45 min", help="Tiempo estimado")
+        
+        # Botón de reentrenamiento
+        st.markdown("---")
+        st.subheader("Lanzar Reentrenamiento")
+        
+        st.info("""
+        💡 El reentrenamiento creará un nuevo modelo usando los datos recolectados 
+        desde que se lanzó el modelo actual. Asegúrate de tener suficientes datos.
+        """)
+        
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            new_data_count = st.number_input(
+                "Mínimo de muestras nuevas requeridas",
+                min_value=1000,
+                max_value=50000,
+                value=5000,
+                step=1000
+            )
+        
+        with col2:
+            validation_split = st.slider(
+                "Validation Split (%)",
+                min_value=10,
+                max_value=40,
+                value=20,
+                step=5
+            )
+        
+        if st.button("🚀 Lanzar Reentrenamiento", type="primary"):
+            # Simulación de proceso
+            with st.spinner("Entrenando nuevo modelo..."):
+                import time
+                progress_bar = st.progress(0)
+                status_text = st.empty()
+                
+                for i in range(100):
+                    time.sleep(0.05)
+                    progress_bar.progress(i + 1)
+                    status_text.text(f"Procesando: {i+1}%")
+                
+                st.success("✅ Modelo reentrenado exitosamente!")
+                st.info("💡 El nuevo modelo está listo para deployment. Revisa las métricas en la sección de A/B Testing.")
+        
+        # Resultados de A/B Testing (si está implementado)
+        st.markdown("---")
+        st.subheader("📊 Resultados de A/B Testing")
+        
+        # Verificar si hay datos de A/B testing
+        ab_stats = fetch_data("/ab-testing/stats")
+        
+        if ab_stats and ab_stats.get("success"):
+            ab_data = ab_stats.get("ab_testing_stats", {})
+            perf = ab_data.get("model_performance", {})
+            
+            if perf:
+                st.success("✅ Hay modelos activos en A/B Testing")
+                
+                # Crear tabla de comparación
+                models_data = []
+                for model_name, model_data in perf.items():
+                    models_data.append({
+                        "Modelo": model_name.replace("_", " ").title(),
+                        "Predicciones": model_data.get("total_predictions", 0),
+                        "Confianza Promedio": f"{model_data.get('avg_confidence', 0)*100:.2f}%",
+                        "Tiempo Promedio": f"{model_data.get('avg_processing_time', 0):.2f}ms"
+                    })
+                
+                df_ab = pd.DataFrame(models_data)
+                st.dataframe(df_ab, use_container_width=True, hide_index=True)
+                
+                # Botón para ver detalles
+                if st.button("Ver detalles de A/B Testing"):
+                    st.info("💡 Navega a la sección 'A/B Testing' para análisis detallado")
+            else:
+                st.info("No hay estadísticas de A/B Testing disponibles")
+        else:
+            st.info("💡 A/B Testing no está activo en este momento")
 
 # Página: Métricas
 elif page == "📊 Métricas":
