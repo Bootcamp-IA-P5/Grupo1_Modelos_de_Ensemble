@@ -29,7 +29,7 @@ st.title("🔥 FireRiskAI - Dashboard de Monitoreo")
 st.sidebar.title("📋 Menú")
 page = st.sidebar.selectbox(
     "Selecciona una sección:",
-    ["🏠 Inicio", "🔮 Predicción", "📊 EDA", "🤖 Modelo", "🔄 Reentrenamiento", "📚 Documentación", "ℹ️ Acerca del Proyecto"]
+    ["🏠 Inicio", "🔮 Predicción", "📊 EDA", "🤖 Modelo", "🔄 Reentrenamiento", "🧪 A/B Testing", "🔍 Data Drift", "🤖 Gestión Modelos", "📚 Documentación", "ℹ️ Acerca del Proyecto"]
 )
 
 # Función para hacer peticiones al backend
@@ -1291,10 +1291,10 @@ elif page == "ℹ️ Acerca del Proyecto":
     
     
     
-    st.dataframe(team_info, use_container_width=True, hide_index=True)
+    # st.dataframe(team_info, use_container_width=True, hide_index=True)  # Comentado - agregar info del equipo si es necesario
     
     st.info("""
-    💡 **Nota**: Actualiza los nombres del equipo con los miembros reales del proyecto.
+    💡 **Nota**: Agrega aquí la información de tu equipo si deseas mostrarla.
     """)
     
     # Objetivos del proyecto
@@ -1721,8 +1721,8 @@ if False: # elif page == "📈 Presentación":
             st.write(f"**N Estimators**: {params.get('n_estimators', 'N/A')}")
             st.write(f"**Subsample**: {params.get('subsample', 'N/A')}")
 
-# Página: A/B Testing (obsolete)
-if False: # elif page == "🧪 A/B Testing":
+# Página: A/B Testing
+elif page == "🧪 A/B Testing":
     st.header("🧪 A/B Testing - Comparación de Modelos")
     
     # Estadísticas de A/B Testing
@@ -1771,8 +1771,8 @@ if False: # elif page == "🧪 A/B Testing":
     else:
         st.error("No se pudieron obtener estadísticas de A/B Testing")
 
-# Página: Data Drift (obsolete)
-if False: # elif page == "🔍 Data Drift":
+# Página: Data Drift
+elif page == "🔍 Data Drift":
     st.header("🔍 Data Drift Monitoring")
     
     # Información sobre Data Drift
@@ -1857,52 +1857,130 @@ if False: # elif page == "🔍 Data Drift":
     else:
         st.error("No se pudo obtener el estado de Data Drift")
 
-# Página: Modelos (obsolete)
-if False: # elif page == "🤖 Modelos":
-    st.header("🤖 Gestión de Modelos")
+# Página: Gestión de Modelos
+elif page == "🤖 Gestión Modelos":
+    st.header("🤖 Gestión y Reemplazo de Modelos")
+    
+    st.markdown("""
+    ### 🎯 **Auto Model Replacement**
+    
+    Esta página permite comparar automáticamente el rendimiento de diferentes modelos y 
+    reemplazar el modelo en producción si se encuentra uno mejor.
+    """)
     
     # Comparar modelos
     model_compare = fetch_data("/models/compare")
     
     if model_compare:
-        st.subheader("Comparación de Modelos")
-        
         best_model = model_compare.get("best_model", "N/A")
         current_model = model_compare.get("current_model", "N/A")
         should_replace = model_compare.get("should_replace", False)
+        best_accuracy = model_compare.get("best_accuracy", 0)
         
-        col1, col2, col3 = st.columns(3)
+        st.subheader("📊 Comparación de Modelos")
+        
+        col1, col2, col3, col4 = st.columns(4)
         with col1:
-            st.metric("Modelo Actual", str(current_model).upper() if current_model else "N/A")
+            st.metric("Modelo Actual", str(current_model).title() if current_model else "N/A")
         with col2:
-            st.metric("Mejor Modelo", str(best_model).upper() if best_model else "N/A")
+            st.metric("Mejor Modelo", str(best_model).title() if best_model else "N/A")
         with col3:
-            st.metric("¿Debería Reemplazarse?", "✅ Sí" if should_replace else "❌ No")
+            st.metric("Mejor Accuracy", f"{best_accuracy*100:.2f}%" if best_accuracy else "N/A")
+        with col4:
+            st.metric("Acción", "🔄 Reemplazar" if should_replace else "✅ Optimizado")
+        
+        if should_replace:
+            st.warning(f"⚠️ **RECOMENDACIÓN**: El modelo `{best_model}` es mejor que `{current_model}`. Deberías reemplazarlo.")
+        else:
+            st.success(f"✅ El modelo `{current_model}` es el mejor disponible actualmente.")
         
         # Estadísticas de modelos
         model_stats = model_compare.get("model_stats", {})
         
         if model_stats:
+            st.markdown("---")
+            st.subheader("📈 Métricas Detalladas por Modelo")
+            
+            # Crear DataFrame con todas las métricas
             df_stats = pd.DataFrame([
-                {"Modelo": model, "Accuracy": data.get("accuracy", 0) * 100}
-                for model, data in model_stats.items()
+                {
+                    "Modelo": model.replace("_", " ").title(),
+                    "Accuracy": f"{stats.get('accuracy', 0)*100:.2f}%",
+                    "F1-Score": f"{stats.get('f1_score', 0)*100:.2f}%",
+                    "Overfitting": f"{stats.get('overfitting', 0)*100:.2f}%",
+                    "Fecha": stats.get('training_date', 'N/A')
+                }
+                for model, stats in model_stats.items()
             ])
             
-            fig = px.bar(df_stats, x="Modelo", y="Accuracy", title="Accuracy por Modelo")
-            st.plotly_chart(fig, use_container_width=True)
+            st.dataframe(df_stats, use_container_width=True, hide_index=True)
             
-            st.dataframe(df_stats)
+            # Gráfico de comparación
+            df_comparison = pd.DataFrame([
+                {
+                    "Modelo": model.replace("_", " ").title(),
+                    "Accuracy": stats.get('accuracy', 0) * 100
+                }
+                for model, stats in model_stats.items()
+            ])
+            
+            fig = px.bar(
+                df_comparison, 
+                x="Modelo", 
+                y="Accuracy", 
+                title="Accuracy por Modelo",
+                color="Accuracy",
+                color_continuous_scale="Greens"
+            )
+            st.plotly_chart(fig, use_container_width=True)
         
         # Botón para reemplazar modelo
+        st.markdown("---")
+        st.subheader("🔄 Acción de Reemplazo")
+        
         if should_replace:
-            st.warning(f"⚠️ El modelo {best_model} es mejor que el actual")
-            if st.button(f"🔄 Reemplazar modelo a {best_model}"):
-                response = requests.post(f"{BASE_URL}/models/replace/{best_model}")
-                if response.status_code == 200:
-                    st.success(f"✅ Modelo reemplazado a {best_model}")
-                    st.rerun()
+            col1, col2 = st.columns(2)
+            with col1:
+                st.info(f"**Cambiar de**: `{current_model}` → **`{best_model}`**")
+                st.write(f"**Razón**: Mejor accuracy ({best_accuracy*100:.2f}% vs {model_stats.get(current_model, {}).get('accuracy', 0)*100:.2f}%)")
+            
+            with col2:
+                if st.button(f"🔄 Reemplazar a {best_model.replace('_', ' ').title()}", type="primary"):
+                    try:
+                        response = requests.post(f"{BASE_URL}/models/replace/{best_model}", timeout=30)
+                        if response.status_code == 200:
+                            st.success(f"✅ Modelo reemplazado exitosamente a {best_model.replace('_', ' ').title()}")
+                            st.rerun()
+                        else:
+                            st.error(f"Error: {response.text}")
+                    except Exception as e:
+                        st.error(f"Error conectando al backend: {e}")
+        else:
+            st.info("💡 No hay mejor modelo disponible. El modelo actual es óptimo.")
+            
+            # Permitir reemplazo manual si es necesario
+            st.markdown("---")
+            st.subheader("🛠️ Reemplazo Manual")
+            available_models = list(model_stats.keys())
+            selected_model = st.selectbox(
+                "Selecciona un modelo para activar:",
+                available_models,
+                index=available_models.index(current_model) if current_model in available_models else 0
+            )
+            
+            if st.button(f"🔄 Activar {selected_model.replace('_', ' ').title()}"):
+                try:
+                    response = requests.post(f"{BASE_URL}/models/replace/{selected_model}", timeout=30)
+                    if response.status_code == 200:
+                        st.success(f"✅ Modelo cambiado exitosamente")
+                        st.rerun()
+                    else:
+                        st.error(f"Error: {response.text}")
+                except Exception as e:
+                    st.error(f"Error conectando al backend: {e}")
     else:
-        st.error("No se pudieron comparar los modelos")
+        st.error("❌ No se pudieron comparar los modelos")
+        st.info("💡 Asegúrate de que el backend esté corriendo y que existan archivos de metadata de modelos.")
 
 # Página: Clima (obsolete)
 if False: # elif page == "🌤️ Clima":
