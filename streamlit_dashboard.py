@@ -29,7 +29,7 @@ st.title("🔥 FireRiskAI - Dashboard de Monitoreo")
 st.sidebar.title("📋 Menú")
 page = st.sidebar.selectbox(
     "Selecciona una sección:",
-    ["🏠 Inicio", "🔮 Predicción", "📊 EDA", "🤖 Modelo", "🔄 Reentrenamiento", "📊 Métricas", "📈 Presentación", "🧪 A/B Testing", "🔍 Data Drift", "🤖 Modelos", "🌤️ Clima"]
+    ["🏠 Inicio", "🔮 Predicción", "📊 EDA", "🤖 Modelo", "🔄 Reentrenamiento", "📚 Documentación", "📊 Métricas", "📈 Presentación", "🧪 A/B Testing", "🔍 Data Drift", "🤖 Modelos", "🌤️ Clima"]
 )
 
 # Función para hacer peticiones al backend
@@ -975,6 +975,308 @@ elif page == "🔄 Reentrenamiento":
                 st.info("No hay estadísticas de A/B Testing disponibles")
         else:
             st.info("💡 A/B Testing no está activo en este momento")
+
+# Página: Documentación Técnica
+elif page == "📚 Documentación":
+    st.header("📚 Documentación Técnica")
+    
+    tab1, tab2, tab3 = st.tabs(["⚙️ Pipeline", "🏗️ Arquitectura", "📖 Guías"])
+    
+    with tab1:
+        st.subheader("Pipeline de Preprocesamiento")
+        
+        st.markdown("""
+        ### 🔄 Pasos del Pipeline
+        
+        El siguiente diagrama muestra el flujo completo de datos desde el input hasta la predicción.
+        """)
+        
+        # Visualización del pipeline
+        st.markdown("""
+        ```
+        1. INPUT DATA
+              ↓
+        2. Feature Engineering
+           - Scaling (StandardScaler)
+           - Encoding (One-hot)
+           - Validation
+              ↓
+        3. Model Prediction (XGBoost)
+              ↓
+        4. Post-processing
+           - Confidence calculation
+           - Risk mapping
+              ↓
+        5. OUTPUT
+           - Prediction
+           - Confidence
+           - Risk assessment
+        ```
+        """)
+        
+        # Pasos detallados
+        st.markdown("---")
+        st.subheader("📝 Pasos Detallados")
+        
+        steps = [
+            ("1. Recepción de Datos", "Features topográficas (54 features)"),
+            ("2. Validación", "Verificar rangos y tipos de datos"),
+            ("3. StandardScaler", "Normalización de features continuas"),
+            ("4. One-Hot Encoding", "Áreas silvestres y tipos de suelo"),
+            ("5. Predicción XGBoost", "Clasificación multiclase (7 clases)"),
+            ("6. Cálculo de Confianza", "Probabilidades por clase"),
+            ("7. Mapeo de Riesgo", "Asignación de nivel de riesgo por tipo"),
+            ("8. Guardado en DB", "MongoDB para historial y métricas")
+        ]
+        
+        for step_num, description in steps:
+            with st.expander(step_num):
+                st.write(description)
+        
+        # Código de ejemplo
+        st.markdown("---")
+        st.subheader("💻 Código de Ejemplo")
+        
+        code_example = """
+        # 1. Cargar datos
+        import pandas as pd
+        data = pd.read_csv("forest_cover.csv")
+        
+        # 2. Aplicar preprocesamiento
+        from sklearn.preprocessing import StandardScaler
+        scaler = StandardScaler()
+        X_scaled = scaler.fit_transform(data.drop('target', axis=1))
+        
+        # 3. Entrenar modelo
+        import xgboost as xgb
+        model = xgb.XGBClassifier(
+            learning_rate=0.2,
+            max_depth=10,
+            n_estimators=500
+        )
+        model.fit(X_scaled, data['target'])
+        
+        # 4. Predicción
+        prediction = model.predict(X_scaled[:1])
+        confidence = model.predict_proba(X_scaled[:1])
+        """
+        
+        st.code(code_example, language='python')
+    
+    with tab2:
+        st.subheader("🏗️ Arquitectura del Modelo")
+        
+        st.markdown("""
+        ### 🧠 Modelo XGBoost
+        
+        El modelo utiliza **XGBoost (Extreme Gradient Boosting)** para clasificación multiclase.
+        """)
+        
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            st.markdown("""
+            #### 📊 **Características del Modelo**
+            
+            - **Algoritmo**: XGBoost Classifier
+            - **Tipo**: Ensemble Learning
+            - **Objective**: multi:softprob
+            - **Features**: 54 (topográficas + encoding)
+            - **Clases**: 7 tipos de vegetación
+            """)
+            
+            st.markdown("""
+            #### ⚙️ **Hiperparámetros**
+            
+            ```python
+            learning_rate = 0.2
+            max_depth = 10
+            n_estimators = 500
+            subsample = 0.9
+            eval_metric = 'mlogloss'
+            ```
+            """)
+        
+        with col2:
+            st.markdown("""
+            #### 🎯 **Rendimiento**
+            
+            - **Accuracy**: 97.07%
+            - **Precision**: 96.8%
+            - **Recall**: 96.5%
+            - **F1-Score**: 96.6%
+            - **Overfitting**: 2.92% (bajo)
+            """)
+            
+            st.markdown("""
+            #### 📦 **Artefactos**
+            
+            - `best_model.pkl`: Modelo entrenado
+            - `scaler.pkl`: Normalizador
+            - `metadata.json`: Información del modelo
+            - `requirements.txt`: Dependencias
+            """)
+        
+        # Diagrama de arquitectura
+        st.markdown("---")
+        st.subheader("📐 Diagrama de Arquitectura")
+        
+        st.markdown("""
+        ```
+        Input Layer (54 features)
+              ↓
+        ├── Elevation Features (continuous)
+        ├── Topographic Features (continuous)
+        ├── Wilderness Areas (categorical → one-hot)
+        └── Soil Types (categorical → one-hot)
+              ↓
+        Preprocessing Layer
+          - StandardScaler
+          - Feature validation
+              ↓
+        XGBoost Model
+          - 500 trees
+          - Max depth: 10
+          - Learning rate: 0.2
+              ↓
+        Output Layer (7 classes)
+          - Spruce/Fir (class 0)
+          - Lodgepole Pine (class 1)
+          - Ponderosa Pine (class 2)
+          - Cottonwood/Willow (class 3)
+          - Aspen (class 4)
+          - Douglas-fir (class 5)
+          - Krummholz (class 6)
+        ```
+        """)
+        
+        # Stack tecnológico
+        st.markdown("---")
+        st.subheader("🛠️ Stack Tecnológico")
+        
+        tech_stack = {
+            "Machine Learning": "XGBoost, Scikit-learn",
+            "Preprocessing": "StandardScaler, Pandas",
+            "Backend": "FastAPI, Python 3.11",
+            "Database": "MongoDB Atlas",
+            "Deployment": "Render.com",
+            "CI/CD": "GitHub Actions"
+        }
+        
+        for tech, desc in tech_stack.items():
+            st.markdown(f"**{tech}**: {desc}")
+    
+    with tab3:
+        st.subheader("📖 Guías de Uso")
+        
+        # Requisitos y dependencias
+        st.markdown("---")
+        st.subheader("📦 Requisitos y Dependencias")
+        
+        st.markdown("""
+        #### **Dependencias Principales:**
+        """)
+        
+        dependencies = """
+        scikit-learn>=1.3.0
+        pandas>=2.0.0
+        numpy>=1.24.0
+        xgboost>=1.7.0
+        fastapi>=0.100.0
+        uvicorn>=0.20.0
+        pymongo>=4.4.0
+        motor>=3.0.0
+        pydantic>=2.0.0
+        python-dotenv>=1.0.0
+        requests>=2.31.0
+        streamlit>=1.28.0
+        plotly>=5.15.0
+        """
+        
+        st.code(dependencies, language='text')
+        
+        # Guía de uso de API
+        st.markdown("---")
+        st.subheader("🔌 Guía de Uso de la API")
+        
+        st.markdown("""
+        #### **Endpoints Principales:**
+        """)
+        
+        api_endpoints = """
+        # Predicción
+        POST /predict
+        {
+            "features": [2500, 180, 15, 200, 50, 1000, ...]
+        }
+        
+        # A/B Testing
+        POST /predict-ab
+        {
+            "features": [2500, 180, 15, 200, 50, 1000, ...]
+        }
+        
+        # Estadísticas
+        GET /metrics
+        GET /ab-testing/stats
+        """
+        
+        st.code(api_endpoints, language='json')
+        
+        # Interpretación de resultados
+        st.markdown("---")
+        st.subheader("🔍 Interpretación de Resultados")
+        
+        st.markdown("""
+        #### **Formato de Respuesta:**
+        """)
+        
+        response_format = """
+        {
+            "prediction": 1,
+            "class_name": "Lodgepole Pine",
+            "confidence": 0.95,
+            "risk_level": "HIGH",
+            "risk_score": 8,
+            "processing_time_ms": 45.2
+        }
+        """
+        
+        st.code(response_format, language='json')
+        
+        st.markdown("""
+        #### **Campos:**
+        
+        - **prediction**: ID de la clase (0-6)
+        - **class_name**: Nombre legible del tipo de vegetación
+        - **confidence**: Nivel de confianza (0-1)
+        - **risk_level**: Nivel de riesgo ("LOW", "MEDIUM", "HIGH")
+        - **risk_score**: Puntuación de riesgo (1-10)
+        - **processing_time_ms**: Tiempo de procesamiento en milisegundos
+        """)
+        
+        # Niveles de riesgo
+        st.markdown("---")
+        st.subheader("⚠️ Niveles de Riesgo")
+        
+        risk_mapping = pd.DataFrame({
+            "Clase": ["Spruce/Fir", "Lodgepole Pine", "Ponderosa Pine", 
+                     "Cottonwood/Willow", "Aspen", "Douglas-fir", "Krummholz"],
+            "Riesgo": ["LOW", "HIGH", "MEDIUM", "LOW", "MEDIUM", "MEDIUM", "HIGH"],
+            "Score": [2, 8, 5, 1, 4, 6, 9]
+        })
+        
+        st.dataframe(risk_mapping, use_container_width=True, hide_index=True)
+        
+        st.info("""
+        💡 **Interpretación:**
+        
+        - **LOW (1-3)**: Vegetación resistente al fuego
+        - **MEDIUM (4-6)**: Riesgo moderado
+        - **HIGH (7-10)**: Alta susceptibilidad al fuego
+        
+        Estos niveles se basan en la estructura y composición de cada tipo de vegetación.
+        """)
 
 # Página: Métricas
 elif page == "📊 Métricas":
