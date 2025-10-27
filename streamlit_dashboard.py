@@ -28,7 +28,7 @@ st.title("🔥 FireRiskAI - Dashboard de Monitoreo")
 st.sidebar.title("📋 Menú")
 page = st.sidebar.selectbox(
     "Selecciona una sección:",
-    ["🏠 Inicio", "📊 Métricas", "📈 Presentación", "🧪 A/B Testing", "🔍 Data Drift", "🤖 Modelos", "🌤️ Clima"]
+    ["🏠 Inicio", "🔮 Predicción", "📊 Métricas", "📈 Presentación", "🧪 A/B Testing", "🔍 Data Drift", "🤖 Modelos", "🌤️ Clima"]
 )
 
 # Función para hacer peticiones al backend
@@ -207,6 +207,142 @@ if page == "🏠 Inicio":
     - 🤖 **[Gestión de Modelos](#)** - Auto-reemplazo y comparación
     - 🌤️ **[API del Clima](#)** - Integración con datos meteorológicos
     """)
+
+# Página: Predicción
+elif page == "🔮 Predicción":
+    st.header("🔮 Predicción en Tiempo Real")
+    st.write("Clasifica el tipo de vegetación forestal a partir de características topográficas y ambientales.")
+    
+    # Tabs para diferentes modos de predicción
+    tab1, tab2 = st.tabs(["📝 Entrada Manual", "📊 Predicción Batch (CSV)"])
+    
+    with tab1:
+        st.subheader("Introduce las Características")
+        
+        # Formulario de entrada
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            elevation = st.number_input("Elevación (m)", min_value=0, max_value=4500, value=2500)
+            aspect = st.number_input("Aspecto (grados)", min_value=0, max_value=360, value=180)
+            slope = st.number_input("Pendiente (grados)", min_value=0, max_value=100, value=15)
+            h_dist_hydrology = st.number_input("Distancia Horizontal a Hidrología", min_value=0, max_value=3000, value=200)
+            v_dist_hydrology = st.number_input("Distancia Vertical a Hidrología", min_value=-200, max_value=500, value=50)
+            h_dist_roadways = st.number_input("Distancia Horizontal a Carreteras", min_value=0, max_value=7000, value=1000)
+            hillshade_9am = st.number_input("Hillshade 9am", min_value=0, max_value=255, value=220)
+            hillshade_noon = st.number_input("Hillshade Mediodía", min_value=0, max_value=255, value=230)
+        
+        with col2:
+            hillshade_3pm = st.number_input("Hillshade 3pm", min_value=0, max_value=255, value=140)
+            h_dist_fire = st.number_input("Distancia Horizontal a Puntos de Fuego", min_value=0, max_value=8000, value=500)
+            
+            # One-hot encoding simplificado (solo primeras features principales)
+            st.markdown("### Areas Silvestres (Wilderness Areas)")
+            wilderness_1 = st.checkbox("Wilderness Area 1", value=True)
+            wilderness_2 = st.checkbox("Wilderness Area 2", value=False)
+            wilderness_3 = st.checkbox("Wilderness Area 3", value=False)
+            wilderness_4 = st.checkbox("Wilderness Area 4", value=False)
+        
+        # Botón de predicción
+        if st.button("🔮 Predecir Tipo de Vegetación", type="primary"):
+            with st.spinner("Procesando predicción..."):
+                try:
+                    # Construir array de features
+                    wilderness = [
+                        1 if wilderness_1 else 0,
+                        1 if wilderness_2 else 0,
+                        1 if wilderness_3 else 0,
+                        1 if wilderness_4 else 0
+                    ]
+                    
+                    # Rellenar resto con ceros (44 features adicionales)
+                    features = [
+                        elevation, aspect, slope, h_dist_hydrology, v_dist_hydrology,
+                        h_dist_roadways, hillshade_9am, hillshade_noon, hillshade_3pm, h_dist_fire
+                    ] + [0] * 40 + wilderness
+                    
+                    # Enviar predicción
+                    response = requests.post(
+                        f"{BASE_URL}/predict",
+                        json={"features": features},
+                        timeout=30
+                    )
+                    
+                    if response.status_code == 200:
+                        result = response.json()
+                        
+                        # Mostrar resultado
+                        st.success("✅ Predicción completada")
+                        
+                        # Métricas de resultado
+                        col1, col2, col3 = st.columns(3)
+                        with col1:
+                            st.metric("Tipo de Vegetación", result.get("class_name", "N/A"))
+                        with col2:
+                            st.metric("Confianza", f"{result.get('confidence', 0)*100:.2f}%")
+                        with col3:
+                            st.metric("Nivel de Riesgo", result.get("risk_level", "N/A"))
+                        
+                        # Interpretación
+                        st.markdown("---")
+                        st.subheader("🔍 Interpretación del Resultado")
+                        
+                        risk_level = result.get("risk_level", "UNKNOWN")
+                        if risk_level == "HIGH":
+                            st.error(f"⚠️ **ALTO RIESGO**: Tipo de vegetación {result.get('class_name')} con score {result.get('risk_score')}/10")
+                        elif risk_level == "MEDIUM":
+                            st.warning(f"⚡ **RIESGO MEDIO**: Tipo de vegetación {result.get('class_name')} con score {result.get('risk_score')}/10")
+                        else:
+                            st.info(f"✅ **BAJO RIESGO**: Tipo de vegetación {result.get('class_name')} con score {result.get('risk_score')}/10")
+                        
+                        # Feedback
+                        st.markdown("---")
+                        st.subheader("📝 Feedback")
+                        col1, col2 = st.columns(2)
+                        with col1:
+                            if st.button("👍 Predicción Correcta"):
+                                st.success("¡Gracias por tu feedback!")
+                        with col2:
+                            if st.button("👎 Predicción Incorrecta"):
+                                st.info("Tu feedback nos ayuda a mejorar el modelo")
+                        
+                        # Probabilidades (si están disponibles)
+                        if "probabilities" in result:
+                            st.markdown("---")
+                            st.subheader("📊 Distribución de Probabilidades")
+                            
+                            class_names = ["Spruce/Fir", "Lodgepole Pine", "Ponderosa Pine", 
+                                          "Cottonwood/Willow", "Aspen", "Douglas-fir", "Krummholz"]
+                            probs = result.get("probabilities", [0] * 7)
+                            
+                            df_probs = pd.DataFrame({
+                                "Clase": class_names,
+                                "Probabilidad": [p * 100 for p in probs]
+                            })
+                            
+                            fig = px.bar(df_probs, x="Clase", y="Probabilidad", 
+                                        title="Probabilidades por Clase de Vegetación")
+                            st.plotly_chart(fig, use_container_width=True)
+                    
+                    else:
+                        st.error(f"Error en la predicción: {response.text}")
+                        
+                except Exception as e:
+                    st.error(f"Error: {e}")
+    
+    with tab2:
+        st.subheader("Predicción Batch desde CSV")
+        st.write("Carga un archivo CSV con múltiples muestras para predicciones batch.")
+        
+        uploaded_file = st.file_uploader("Selecciona archivo CSV", type=['csv'])
+        
+        if uploaded_file:
+            df = pd.read_csv(uploaded_file)
+            st.write("**Vista previa del archivo:**")
+            st.dataframe(df.head())
+            
+            if st.button("🔮 Predecir Batch"):
+                st.info("💡 Esta funcionalidad está en desarrollo")
 
 # Página: Métricas
 elif page == "📊 Métricas":
