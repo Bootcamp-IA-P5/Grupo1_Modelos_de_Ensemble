@@ -29,7 +29,7 @@ st.title("🔥 FireRiskAI - Dashboard de Monitoreo")
 st.sidebar.title("📋 Menú")
 page = st.sidebar.selectbox(
     "Selecciona una sección:",
-    ["🏠 Inicio", "🔮 Predicción", "📊 EDA", "🤖 Modelo", "🔄 Reentrenamiento", "📚 Documentación", "📊 Métricas", "📈 Presentación", "🧪 A/B Testing", "🔍 Data Drift", "🤖 Modelos", "🌤️ Clima"]
+    ["🏠 Inicio", "🔮 Predicción", "📊 EDA", "🤖 Modelo", "🔄 Reentrenamiento", "📚 Documentación"]
 )
 
 # Función para hacer peticiones al backend
@@ -1278,8 +1278,10 @@ elif page == "📚 Documentación":
         Estos niveles se basan en la estructura y composición de cada tipo de vegetación.
         """)
 
-# Página: Métricas
-elif page == "📊 Métricas":
+# (Old pages removed to simplify menu)
+
+# Página: Métricas (obsolete - keeping code commented for now)
+if False: # elif page == "📊 Métricas":
     st.header("📊 Métricas del Modelo - FireRiskAI")
     
     # Descripción del proyecto
@@ -1427,8 +1429,8 @@ elif page == "📊 Métricas":
         st.error("No se pudieron obtener las métricas del modelo")
         st.info("💡 Asegúrate de que el backend esté corriendo en el puerto 8000")
 
-# Página: Presentación
-elif page == "📈 Presentación":
+# Página: Presentación (obsolete)
+if False: # elif page == "📈 Presentación":
     st.header("📈 FireRiskAI - Sistema de Predicción de Riesgo de Incendios")
     
     # Hero Section
@@ -1536,8 +1538,8 @@ elif page == "📈 Presentación":
             st.write(f"**N Estimators**: {params.get('n_estimators', 'N/A')}")
             st.write(f"**Subsample**: {params.get('subsample', 'N/A')}")
 
-# Página: A/B Testing
-elif page == "🧪 A/B Testing":
+# Página: A/B Testing (obsolete)
+if False: # elif page == "🧪 A/B Testing":
     st.header("🧪 A/B Testing - Comparación de Modelos")
     
     # Estadísticas de A/B Testing
@@ -1586,8 +1588,8 @@ elif page == "🧪 A/B Testing":
     else:
         st.error("No se pudieron obtener estadísticas de A/B Testing")
 
-# Página: Data Drift
-elif page == "🔍 Data Drift":
+# Página: Data Drift (obsolete)
+if False: # elif page == "🔍 Data Drift":
     st.header("🔍 Data Drift Monitoring")
     
     # Información sobre Data Drift
@@ -1672,8 +1674,8 @@ elif page == "🔍 Data Drift":
     else:
         st.error("No se pudo obtener el estado de Data Drift")
 
-# Página: Modelos
-elif page == "🤖 Modelos":
+# Página: Modelos (obsolete)
+if False: # elif page == "🤖 Modelos":
     st.header("🤖 Gestión de Modelos")
     
     # Comparar modelos
@@ -1719,8 +1721,8 @@ elif page == "🤖 Modelos":
     else:
         st.error("No se pudieron comparar los modelos")
 
-# Página: Clima
-elif page == "🌤️ Clima":
+# Página: Clima (obsolete)
+if False: # elif page == "🌤️ Clima":
     st.header("🌤️ Weather API Integration")
     
     st.write("Ingresa coordenadas para obtener el clima:")
