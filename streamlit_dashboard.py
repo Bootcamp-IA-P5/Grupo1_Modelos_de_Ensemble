@@ -2071,7 +2071,5 @@ if False: # elif page == "🌤️ Clima":
         else:
             st.error("Error obteniendo datos del clima")
 
-# Botón de refresh manual
-if st.sidebar.button("🔄 Actualizar Datos"):
-    st.rerun()
+# Streamlit actualiza automáticamente con @st.cache_data
 
