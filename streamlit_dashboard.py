@@ -1945,11 +1945,12 @@ elif page == "🤖 Gestión Modelos":
                 st.write(f"**Razón**: Mejor accuracy ({best_accuracy*100:.2f}% vs {model_stats.get(current_model, {}).get('accuracy', 0)*100:.2f}%)")
             
             with col2:
-                if st.button(f"🔄 Reemplazar a {best_model.replace('_', ' ').title()}", type="primary"):
+                best_model_display = best_model.replace('_', ' ').title() if best_model else "N/A"
+                if st.button(f"🔄 Reemplazar a {best_model_display}", type="primary"):
                     try:
                         response = requests.post(f"{BASE_URL}/models/replace/{best_model}", timeout=30)
                         if response.status_code == 200:
-                            st.success(f"✅ Modelo reemplazado exitosamente a {best_model.replace('_', ' ').title()}")
+                            st.success(f"✅ Modelo reemplazado exitosamente a {best_model_display}")
                             st.rerun()
                         else:
                             st.error(f"Error: {response.text}")
@@ -1961,23 +1962,25 @@ elif page == "🤖 Gestión Modelos":
             # Permitir reemplazo manual si es necesario
             st.markdown("---")
             st.subheader("🛠️ Reemplazo Manual")
-            available_models = list(model_stats.keys())
+            available_models = list(model_stats.keys()) if model_stats else []
             selected_model = st.selectbox(
                 "Selecciona un modelo para activar:",
                 available_models,
-                index=available_models.index(current_model) if current_model in available_models else 0
+                index=available_models.index(current_model) if current_model in available_models and available_models else 0
             )
             
-            if st.button(f"🔄 Activar {selected_model.replace('_', ' ').title()}"):
-                try:
-                    response = requests.post(f"{BASE_URL}/models/replace/{selected_model}", timeout=30)
-                    if response.status_code == 200:
-                        st.success(f"✅ Modelo cambiado exitosamente")
-                        st.rerun()
-                    else:
-                        st.error(f"Error: {response.text}")
-                except Exception as e:
-                    st.error(f"Error conectando al backend: {e}")
+            if available_models:
+                selected_model_display = selected_model.replace('_', ' ').title() if selected_model else "N/A"
+                if st.button(f"🔄 Activar {selected_model_display}"):
+                    try:
+                        response = requests.post(f"{BASE_URL}/models/replace/{selected_model}", timeout=30)
+                        if response.status_code == 200:
+                            st.success(f"✅ Modelo cambiado exitosamente")
+                            st.rerun()
+                        else:
+                            st.error(f"Error: {response.text}")
+                    except Exception as e:
+                        st.error(f"Error conectando al backend: {e}")
     else:
         st.error("❌ No se pudieron comparar los modelos")
         st.info("💡 Asegúrate de que el backend esté corriendo y que existan archivos de metadata de modelos.")
