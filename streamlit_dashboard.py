@@ -189,31 +189,7 @@ if page == "🏠 Inicio":
     else:
         st.warning("⚠️ No se pudo obtener información del modelo. Verifica la conexión con el backend.")
     
-    # Estado del sistema
-    st.markdown("---")
-    st.markdown("""
-    ## 🔧 Estado del Sistema
-    """)
-    
-    health = fetch_data("/health")
-    if health:
-        st.success("✅ Backend conectado y funcionando")
-    else:
-        st.error("❌ Backend no disponible")
-        st.warning("💡 Para iniciar el backend: `python -m uvicorn app:app --port 8000`")
-    
-    # Enlaces rápidos
-    st.markdown("---")
-    st.markdown("""
-    ## 🚀 Navegación Rápida
-    
-    - 📊 **[Métricas del Modelo](#)** - Ver rendimiento y decisiones técnicas
-    - 📈 **[Presentación del Proyecto](#)** - Showcase completo del sistema
-    - 🧪 **[A/B Testing](#)** - Comparación de modelos en tiempo real
-    - 🔍 **[Data Drift](#)** - Monitoreo de cambios en datos
-    - 🤖 **[Gestión de Modelos](#)** - Auto-reemplazo y comparación
-    - 🌤️ **[API del Clima](#)** - Integración con datos meteorológicos
-    """)
+   
 
 # Página: Predicción
 elif page == "🔮 Predicción":
