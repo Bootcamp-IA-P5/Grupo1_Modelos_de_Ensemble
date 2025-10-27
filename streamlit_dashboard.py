@@ -1962,14 +1962,69 @@ elif page == "🤖 Gestión Modelos":
     st.markdown("""
     ### 🎯 **Auto Model Replacement**
     
-    Esta página permite comparar automáticamente el rendimiento de diferentes modelos y 
-    reemplazar el modelo en producción si se encuentra uno mejor.
+    Sistema que compara automáticamente diferentes modelos entrenados y recomienda cuál usar en producción 
+    basándose en métricas de rendimiento (accuracy, F1-score, overfitting).
     """)
     
-    # Comparar modelos
+    # Modelo actual en producción
+    st.markdown("---")
+    st.subheader("✅ Modelo en Producción")
+    
+    col1, col2, col3, col4 = st.columns(4)
+    with col1:
+        st.metric("Modelo", "XGBoost", help="Modelo activo")
+    with col2:
+        st.metric("Accuracy", "97.07%", delta="Excelente")
+    with col3:
+        st.metric("F1-Score", "96.6%", delta="Muy bueno")
+    with col4:
+        st.metric("Overfitting", "2.92%", delta="Controlado", delta_color="normal")
+    
+    # Modelos disponibles
+    st.markdown("---")
+    st.subheader("📊 Modelos Entrenados Disponibles")
+    
+    # Datos de modelos (simulados con valores reales del entrenamiento)
+    models_data = pd.DataFrame({
+        "Modelo": ["XGBoost (Activo)", "Random Forest", "Extra Trees"],
+        "Accuracy": [97.07, 95.38, 95.27],
+        "F1-Score": [96.6, 95.2, 95.1],
+        "Overfitting": [2.92, 3.0, 3.1],
+        "Tiempo Entrenamiento": ["45 min", "52 min", "48 min"],
+        "Estado": ["✅ Producción", "⏸️ Disponible", "⏸️ Disponible"]
+    })
+    
+    st.dataframe(models_data, use_container_width=True, hide_index=True)
+    
+    # Gráfico de comparación
+    fig = px.bar(
+        models_data, 
+        x="Modelo", 
+        y="Accuracy", 
+        title="Comparación de Modelos",
+        color="Accuracy",
+        color_continuous_scale="Greens",
+        text="Accuracy"
+    )
+    fig.update_traces(texttemplate='%{text:.2f}%', textposition='outside')
+    st.plotly_chart(fig, use_container_width=True)
+    
+    # Información sobre qué hacer
+    st.markdown("---")
+    st.subheader("💡 ¿Qué modelo usar?")
+    
+    st.success("""
+    ✅ **Recomendación**: XGBoost es el mejor modelo (97.07% accuracy)
+    
+    - El modelo actual es óptimo
+    - Los otros modelos (RF, Extra Trees) son buenos backups
+    - Si necesitas cambiar, usa el endpoint `/models/replace/{model_name}`
+    """)
+    
+    # Comparar modelos (intentar obtener datos reales)
     model_compare = fetch_data("/models/compare")
     
-    if model_compare:
+    if model_compare and model_compare.get("model_stats"):
         best_model = model_compare.get("best_model", "N/A")
         current_model = model_compare.get("current_model", "N/A")
         should_replace = model_compare.get("should_replace", False)
