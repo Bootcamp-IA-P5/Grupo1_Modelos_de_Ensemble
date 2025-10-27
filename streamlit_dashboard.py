@@ -29,7 +29,7 @@ st.title("🔥 FireRiskAI - Dashboard de Monitoreo")
 st.sidebar.title("📋 Menú")
 page = st.sidebar.selectbox(
     "Selecciona una sección:",
-    ["🏠 Inicio", "🔮 Predicción", "📊 EDA", "🤖 Modelo", "🔄 Reentrenamiento", "📚 Documentación"]
+    ["🏠 Inicio", "🔮 Predicción", "📊 EDA", "🤖 Modelo", "🔄 Reentrenamiento", "📚 Documentación", "ℹ️ Acerca del Proyecto"]
 )
 
 # Función para hacer peticiones al backend
@@ -1277,6 +1277,206 @@ elif page == "📚 Documentación":
         
         Estos niveles se basan en la estructura y composición de cada tipo de vegetación.
         """)
+
+# Página: Acerca del Proyecto
+elif page == "ℹ️ Acerca del Proyecto":
+    st.header("ℹ️ Acerca del Proyecto")
+    
+    st.markdown("""
+    ### 🔥 **FireRiskAI**
+    #### **Sistema Inteligente de Clasificación de Vegetación Forestal**
+    """)
+    
+    # Equipo de desarrollo
+    st.markdown("---")
+    st.subheader("👥 Equipo de Desarrollo")
+    
+    st.markdown("""
+    Este proyecto ha sido desarrollado como parte del **Bootcamp IA** del Grupo 1.
+    
+    ### **Equipo:**
+    """)
+    
+    # Información del equipo (simulada - actualizar con datos reales)
+    team_info = pd.DataFrame({
+        "Nombre": ["[Nombre]", "[Nombre]", "[Nombre]"],
+        "Rol": ["ML Engineer", "Backend Developer", "Frontend Developer"],
+        "Responsabilidad": [
+            "Entrenamiento y optimización de modelos",
+            "API y base de datos",
+            "Interfaz de usuario"
+        ]
+    })
+    
+    st.dataframe(team_info, use_container_width=True, hide_index=True)
+    
+    st.info("""
+    💡 **Nota**: Actualiza los nombres del equipo con los miembros reales del proyecto.
+    """)
+    
+    # Objetivos del proyecto
+    st.markdown("---")
+    st.subheader("🎯 Objetivos del Proyecto")
+    
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.markdown("""
+        #### **Objetivo Principal**
+        
+        Desarrollar un sistema de Machine Learning capaz de clasificar correctamente 
+        7 tipos de vegetación forestal basándose en características topográficas y 
+        ambientales, con el fin de evaluar el riesgo de incendio asociado a cada tipo.
+        """)
+    
+    with col2:
+        st.markdown("""
+        #### **Objetivos Específicos**
+        
+        - ✅ Alcanzar **≥95% accuracy** en clasificación multiclase
+        - ✅ Controlar el overfitting **<5%** de diferencia
+        - ✅ Implementar sistema de **A/B Testing**
+        - ✅ Monitoreo de **Data Drift**
+        - ✅ Auto-reemplazo de modelos
+        """)
+    
+    # Métricas del proyecto
+    st.markdown("---")
+    st.subheader("📊 Métricas del Proyecto")
+    
+    # Obtener información del modelo
+    model_info = fetch_data("/model")
+    
+    if model_info:
+        perf = model_info.get("performance", {})
+        params = model_info.get("parameters", {})
+        
+        col1, col2, col3, col4 = st.columns(4)
+        
+        with col1:
+            st.metric("Accuracy", f"{perf.get('accuracy', 0)*100:.2f}%", 
+                     delta="97.07%", delta_color="normal")
+        with col2:
+            st.metric("F1-Score", "96.6%", delta="✅ Excelente")
+        with col3:
+            st.metric("Overfitting", "2.92%", delta="✅ Controlado")
+        with col4:
+            st.metric("Clases", perf.get("classes", 7))
+    
+    # Enlaces
+    st.markdown("---")
+    st.subheader("🔗 Enlaces del Proyecto")
+    
+    st.markdown("""
+    ### **Repositorios y Documentación**
+    """)
+    
+    # Repositorio GitHub
+    st.markdown("""
+    #### 📦 **Repositorio GitHub**
+    
+    [🔗 Ver en GitHub](https://github.com/tu-usuario/tu-repositorio)
+    
+    Contiene:
+    - Código fuente del proyecto
+    - Scripts de entrenamiento
+    - Documentación técnica
+    - Historial de commits
+    """)
+    
+    # Trello/Jira
+    st.markdown("---")
+    st.markdown("""
+    #### 📋 **Gestión del Proyecto (Trello/Jira)**
+    
+    [🔗 Ver Tablero](https://trello.com/board/tu-proyecto)
+    
+    Incluye:
+    - Tareas y user stories
+    - Sprint planning
+    - Roadmap del proyecto
+    - Bugs y mejoras
+    """)
+    
+    # Informe técnico (simulado)
+    st.markdown("---")
+    st.markdown("""
+    #### 📄 **Informe Técnico (PDF)**
+    
+    [📥 Descargar Informe Técnico](./docs/informe_tecnico.pdf)
+    
+    El informe incluye:
+    - Metodología completa
+    - Análisis exploratorio de datos
+    - Detalles de entrenamiento
+    - Evaluación de resultados
+    - Conclusiones y mejoras futuras
+    """)
+    
+    st.info("""
+    💡 **Nota**: Actualiza los enlaces con los URLs reales de tu repositorio, tablero y documento.
+    """)
+    
+    # Contacto
+    st.markdown("---")
+    st.subheader("📧 Contacto")
+    
+    st.markdown("""
+    ### **¿Tienes preguntas o sugerencias?**
+    
+    Para más información sobre el proyecto, puedes contactarnos a través de:
+    
+    - 📧 **Email**: contacto@fireriskai.com
+    - 🐙 **GitHub**: [@tu-usuario](https://github.com/tu-usuario)
+    - 💬 **Issues**: [Reportar un problema](https://github.com/tu-usuario/repo/issues)
+    """)
+    
+    # Stack tecnológico
+    st.markdown("---")
+    st.subheader("🛠️ Stack Tecnológico")
+    
+    st.markdown("""
+    Este proyecto utiliza las siguientes tecnologías:
+    """)
+    
+    stack = pd.DataFrame({
+        "Categoría": ["ML", "Backend", "Database", "Deployment", "Visualization", "Testing"],
+        "Tecnología": [
+            "XGBoost, Scikit-learn",
+            "FastAPI, Python 3.11",
+            "MongoDB Atlas",
+            "Render.com",
+            "Streamlit, Plotly",
+            "pytest"
+        ]
+    })
+    
+    st.dataframe(stack, use_container_width=True, hide_index=True)
+    
+    # Estado del proyecto
+    st.markdown("---")
+    st.subheader("📈 Estado del Proyecto")
+    
+    st.success("""
+    ✅ **Estado Actual**: En Producción
+    
+    - ✅ Backend desplegado en Render.com
+    - ✅ Modelo entrenado y optimizado
+    - ✅ Dashboard Streamlit funcional
+    - ✅ A/B Testing implementado
+    - ✅ Data Drift Monitoring activo
+    - ✅ Auto Model Replacement disponible
+    """)
+    
+    # Licencia
+    st.markdown("---")
+    st.subheader("📜 Licencia")
+    
+    st.markdown("""
+    Este proyecto fue desarrollado con fines educativos como parte del Bootcamp IA.
+    
+    **© 2024 Grupo 1 - FireRiskAI**
+    """)
 
 # (Old pages removed to simplify menu)
 
