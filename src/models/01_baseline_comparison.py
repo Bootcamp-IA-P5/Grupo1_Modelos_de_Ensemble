@@ -28,8 +28,7 @@ try:
     XGBOOST_AVAILABLE = True
 except (ImportError, Exception) as e:
     XGBOOST_AVAILABLE = False
-    print("⚠️  XGBoost no disponible. Error:", str(e)[:50] + "...")
-    print("💡 Continuando sin XGBoost...")
+ 
 
 try:
     import lightgbm as lgb

@@ -1415,9 +1415,7 @@ elif page == "ℹ️ Acerca del Proyecto":
     - Conclusiones y mejoras futuras
     """)
     
-    st.info("""
-    💡 **Nota**: Actualiza los enlaces con los URLs reales de tu repositorio, tablero y documento.
-    """)
+
     
     # Contacto
     st.markdown("---")
@@ -2020,7 +2018,7 @@ elif page == "🤖 Gestión Modelos":
     - ✅ Sistema monitorizado y funcionando correctamente
     """)
 
-# Página: Clima (obsolete)
+
 if False: # elif page == "🌤️ Clima":
     st.header("🌤️ Weather API Integration")
     
