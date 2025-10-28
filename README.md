@@ -189,13 +189,13 @@ python -m pytest tests/test_metrics.py
 python -m pytest tests/test_feedback.py
 ```
 
-### Linting y Formato
+### Verificación de Código
 ```bash
-# Verificar estilo de código
-flake8 src/ tests/
+# Verificar sintaxis Python
+python -m py_compile src/api/routes/*.py
 
-# Formatear código
-black src/ tests/
+# Ejecutar tests con verbose
+python -m pytest tests/ -v
 ```
 
 ## 🏗️ Arquitectura del Sistema
