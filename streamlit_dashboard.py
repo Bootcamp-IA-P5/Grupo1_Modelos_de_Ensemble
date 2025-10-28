@@ -305,7 +305,7 @@ elif page == "🔮 Predicción":
                             
                             fig = px.bar(df_probs, x="Clase", y="Probabilidad", 
                                         title="Probabilidades por Clase de Vegetación")
-                            st.plotly_chart(fig, width='stretch')
+                            st.plotly_chart(fig, use_container_width=True)
                     
                     else:
                         st.error(f"Error en la predicción: {response.text}")
@@ -366,13 +366,13 @@ elif page == "📊 EDA":
                         color="Cantidad",
                         color_continuous_scale="Greens")
             fig.update_xaxes(tickangle=45)
-            st.plotly_chart(fig, width='stretch', config={'displayModeBar': True})
+            st.plotly_chart(fig, use_container_width=True, config={'displayModeBar': True})
         
         with col2:
             # Gráfico pie
             fig = px.pie(df_dist, values="Cantidad", names="Clase",
                         title="Proporción de Clases en el Dataset")
-            st.plotly_chart(fig, width='stretch')
+            st.plotly_chart(fig, use_container_width=True)
         
 
         # Histograma de features importantes
@@ -452,7 +452,7 @@ elif page == "📊 EDA":
             fig = px.histogram(data, x="Hillshade", color="Clase", nbins=40,
                              title="Distribución de Hillshade (Sombra Solar) por Clase")
         
-        st.plotly_chart(fig, width='stretch')
+        st.plotly_chart(fig, use_container_width=True)
     
     with tab2:
         st.subheader("Análisis de Correlación")
@@ -474,7 +474,7 @@ elif page == "📊 EDA":
         fig = px.imshow(df_corr, labels=dict(color="Correlación"),
                        title="Matriz de Correlación entre Features",
                        color_continuous_scale="RdBu_r")
-        st.plotly_chart(fig, width='stretch')
+        st.plotly_chart(fig, use_container_width=True)
         
         # Box plots comparativos
         st.markdown("---")
@@ -498,7 +498,7 @@ elif page == "📊 EDA":
         fig = px.box(df_box, x="Clase", y="Valor", 
                     title=f"Distribución de {feature_box} por Clase")
         fig.update_xaxes(tickangle=45)
-        st.plotly_chart(fig, width='stretch')
+        st.plotly_chart(fig, use_container_width=True)
         
         # Análisis de outliers
         st.markdown("---")
@@ -609,7 +609,7 @@ elif page == "🤖 Modelo":
                             color="Precision",
                             color_continuous_scale="Blues")
                 fig.update_xaxes(tickangle=45)
-                st.plotly_chart(fig, width='stretch')
+                st.plotly_chart(fig, use_container_width=True)
             
             with col2:
                 fig = px.bar(df_metrics, x="Clase", y="Recall", 
@@ -617,7 +617,7 @@ elif page == "🤖 Modelo":
                             color="Recall",
                             color_continuous_scale="Greens")
                 fig.update_xaxes(tickangle=45)
-                st.plotly_chart(fig, width='stretch')
+                st.plotly_chart(fig, use_container_width=True)
             
             # Classification Report
             st.markdown("---")
@@ -667,7 +667,7 @@ elif page == "🤖 Modelo":
                         labels={"Importance": "Importancia", "Feature": "Característica"},
                         color="Importance",
                         color_continuous_scale="Viridis")
-            st.plotly_chart(fig, width='stretch')
+            st.plotly_chart(fig, use_container_width=True)
             
             # Insights
             st.markdown("---")
@@ -714,7 +714,7 @@ elif page == "🤖 Modelo":
                 width=800,
                 height=700
             )
-            st.plotly_chart(fig, width='stretch')
+            st.plotly_chart(fig, use_container_width=True)
             
             # Interpretación
             st.markdown("---")
@@ -794,7 +794,7 @@ elif page == "🤖 Modelo":
                         barmode='group',
                         title="Comparación Train vs Validation",
                         labels={"value": "Score", "variable": "Dataset"})
-            st.plotly_chart(fig, width='stretch')
+            st.plotly_chart(fig, use_container_width=True)
             
             # Análisis de overfitting
             st.markdown("---")
@@ -866,7 +866,7 @@ elif page == "🔄 Reentrenamiento":
         fig = px.line(df_temporal, x="Fecha", y="Predicciones",
                      title="Predicciones Diarias (Últimos 30 días)",
                      markers=True)
-        st.plotly_chart(fig, width='stretch')
+        st.plotly_chart(fig, use_container_width=True)
         
         # Distribución por clase
         class_names = ["Spruce/Fir", "Lodgepole Pine", "Ponderosa Pine", 
@@ -878,7 +878,7 @@ elif page == "🔄 Reentrenamiento":
                     title="Predicciones por Clase",
                     labels={"x": "Clase", "y": "Número de Predicciones"})
         fig.update_xaxes(tickangle=45)
-        st.plotly_chart(fig, width='stretch')
+        st.plotly_chart(fig, use_container_width=True)
     
     with tab2:
         st.subheader("Análisis de Calidad del Modelo")
@@ -914,7 +914,7 @@ elif page == "🔄 Reentrenamiento":
                     barmode='group',
                     title="Comparación Modelo Original vs Actual",
                     labels={"value": "Score (%)", "variable": "Modelo"})
-        st.plotly_chart(fig, width='stretch')
+        st.plotly_chart(fig, use_container_width=True)
     
     with tab3:
         st.subheader("🔄 Acciones de Reentrenamiento")
@@ -1377,7 +1377,7 @@ elif page == "ℹ️ Acerca del Proyecto":
     st.markdown("""
     #### 📦 **Repositorio GitHub**
     
-    [🔗 Ver en GitHub](https://github.com/tu-usuario/tu-repositorio)
+    [🔗 Ver en GitHub](https://github.com/Bootcamp-IA-P5/Grupo1_Modelos_de_Ensemble)
     
     Contiene:
     - Código fuente del proyecto
@@ -1389,9 +1389,9 @@ elif page == "ℹ️ Acerca del Proyecto":
     # Trello/Jira
     st.markdown("---")
     st.markdown("""
-    #### 📋 **Gestión del Proyecto (Trello/Jira)**
+    #### 📋 **Gestión del Proyecto (Github Projects)**
     
-    [🔗 Ver Tablero](https://trello.com/board/tu-proyecto)
+    [🔗 Ver Tablero](https://github.com/orgs/Bootcamp-IA-P5/projects/12)
     
     Incluye:
     - Tareas y user stories
@@ -1405,7 +1405,7 @@ elif page == "ℹ️ Acerca del Proyecto":
     st.markdown("""
     #### 📄 **Informe Técnico (PDF)**
     
-    [📥 Descargar Informe Técnico](./docs/informe_tecnico.pdf)
+    [📥 Descargar Informe Técnico](https://drive.google.com/file/d/1705aC46FbNICvAolYX4wR4xIdj44d8DM/view)
     
     El informe incluye:
     - Metodología completa
@@ -1428,9 +1428,15 @@ elif page == "ℹ️ Acerca del Proyecto":
     
     Para más información sobre el proyecto, puedes contactarnos a través de:
     
-    - 📧 **Email**: contacto@fireriskai.com
-    - 🐙 **GitHub**: [@tu-usuario](https://github.com/tu-usuario)
-    - 💬 **Issues**: [Reportar un problema](https://github.com/tu-usuario/repo/issues)
+    
+     **GitHub**: [@Barbarasanchez11](https://github.com/Barbarasanchez11)
+     
+     **GitHub**: [@buntynanwani](https://github.com/buntynanwani)
+
+     **GitHub**: [@Arowi95](https://github.com/Arowi95)
+
+     **GitHub**: [@GHalfbbt](https://github.com/GHalfbbt)
+     
     """)
     
     # Stack tecnológico
@@ -1479,573 +1485,4 @@ elif page == "ℹ️ Acerca del Proyecto":
     
     **© 2025 Grupo 1 - FireRiskAI**
     """)
-
-# (Old pages removed to simplify menu)
-
-# Página: Métricas (obsolete - keeping code commented for now)
-if False: # elif page == "📊 Métricas":
-    st.header("📊 Métricas del Modelo - FireRiskAI")
-    
-    # Descripción del proyecto
-    st.markdown("""
-    ### 🎯 Sobre el Proyecto
-    
-    **FireRiskAI** es un sistema de clasificación de tipos de vegetación forestal que utiliza 
-    Machine Learning para determinar el riesgo de incendio asociado a cada tipo de bosque.
-    
-    **Problema:** Clasificar correctamente el tipo de vegetación forestal para evaluar el riesgo de incendio.
-    
-    **Solución:** Modelo de Machine Learning (XGBoost) que clasifica 7 tipos de vegetación con 97% de precisión.
-    """)
-    
-    # Obtener información del modelo
-    model_info = fetch_data("/model")
-    
-    if model_info:
-        model_data = model_info.get("model_info", {})
-        perf = model_info.get("performance", {})
-        
-        # Métricas principales
-        st.markdown("---")
-        st.subheader("🎯 Métricas Principales")
-        
-        col1, col2, col3, col4 = st.columns(4)
-        with col1:
-            st.metric("Precisión Global", f"{perf.get('accuracy', 0)*100:.2f}%", 
-                     help="Porcentaje de predicciones correctas sobre el total")
-        with col2:
-            st.metric("Número de Clases", perf.get("classes", 7),
-                     help="Tipos de vegetación forestal que clasificamos")
-        with col3:
-            st.metric("Features", perf.get("features", 54),
-                     help="Características topográficas y ambientales usadas")
-        with col4:
-            st.metric("Tamaño Dataset", f"{perf.get('dataset_size', 0):,}",
-                     help="Muestras usadas para entrenar el modelo")
-        
-        st.markdown("---")
-        
-        # Decisión Técnica: Por qué XGBoost
-        st.subheader("🤔 Decisiones Técnicas")
-        
-        col1, col2 = st.columns(2)
-        
-        with col1:
-            st.markdown("""
-            #### ✅ **¿Por qué XGBoost?**
-            
-            - **Rendimiento Superior**: 97% accuracy vs 95-96% de otros modelos
-            - **Manejo de Features**: 54 features topográficas complejas
-            - **Overfitting Controlado**: Solo 2.92% de diferencia train/test
-            - **Tiempo de Entrenamiento**: 45 minutos (razonable para dataset grande)
-            
-            #### ✅ **¿Por qué StandardScaler?**
-            
-            - Features tienen escalas muy diferentes (elevación: 0-4000, pendiente: 0-360)
-            - XGBoost es sensible a escalas diferentes
-            - Normalización mejora interpretabilidad
-            """)
-        
-        with col2:
-            st.markdown("""
-            #### ✅ **¿Por qué GridSearchCV?**
-            
-            - **Optimización Automática**: Probar muchas combinaciones de hiperparámetros
-            - **Validación Cruzada**: 5-fold CV para evitar overfitting
-            - **Robustez**: Modelo funciona bien en datos no vistos
-            
-            #### ✅ **¿Por qué 7 Clases?**
-            
-            - Dataset **Forest Cover Type** tiene 7 tipos de vegetación distintos
-            - Cada tipo tiene características topográficas diferentes
-            - Permite evaluación detallada del riesgo por tipo de bosque
-            """)
-        
-        st.markdown("---")
-        
-        # Matriz de Confusión (simulada)
-        st.subheader("📊 Matriz de Confusión (Esperada)")
-        
-        st.info("""
-        💡 **Nota:** Esta es una matriz de confusión representativa basada en las métricas del modelo.
-        La matriz real se genera durante el entrenamiento y muestra cómo el modelo predice cada clase.
-        """)
-        
-        # Crear matriz de confusión simulada con datos reales
-        class_names = ["Spruce/Fir", "Lodgepole Pine", "Ponderosa Pine", 
-                      "Cottonwood/Willow", "Aspen", "Douglas-fir", "Krummholz"]
-        
-        # Datos simulados basados en 97% accuracy
-        import numpy as np
-        confusion_matrix = np.array([
-            [9500, 50, 30, 20, 0, 0, 0],
-            [40, 9800, 100, 30, 20, 10, 0],
-            [30, 80, 9600, 50, 40, 100, 100],
-            [20, 20, 40, 9200, 100, 20, 0],
-            [0, 10, 30, 120, 9400, 30, 10],
-            [10, 20, 110, 20, 50, 9600, 90],
-            [0, 0, 90, 0, 10, 120, 9700]
-        ])
-        
-        # Crear heatmap con Plotly
-        fig = px.imshow(
-            confusion_matrix,
-            labels=dict(x="Predicción", y="Verdadero"),
-            x=class_names,
-            y=class_names,
-            text_auto=True,
-            color_continuous_scale="Blues"
-        )
-        fig.update_layout(
-            title="Matriz de Confusión - Modelo XGBoost",
-            width=700,
-            height=600
-        )
-        st.plotly_chart(fig, width='stretch')
-        
-        # Interpretación
-        st.markdown("""
-        #### 📈 **Interpretación de la Matriz**
-        
-        - **Diagonal Principal**: Valores altos indican predicciones correctas
-        - **Fuera de la Diagonal**: Errores de clasificación
-        - **Lodgepole Pine** y **Douglas-fir** tienen algunas confusiones (bosques con características similares)
-        - **Overall Accuracy**: 97% - Excelente rendimiento para 7 clases
-        """)
-        
-        # Información adicional del modelo
-        st.markdown("---")
-        st.subheader("⚙️ Configuración del Modelo")
-        
-        params = model_info.get("parameters", {})
-        col1, col2 = st.columns(2)
-        with col1:
-            st.write(f"**Algoritmo**: {model_data.get('algorithm', 'N/A')}")
-            st.write(f"**Learning Rate**: {params.get('learning_rate', 'N/A')}")
-            st.write(f"**Max Depth**: {params.get('max_depth', 'N/A')}")
-        with col2:
-            st.write(f"**N Estimators**: {params.get('n_estimators', 'N/A')}")
-            st.write(f"**Subsample**: {params.get('subsample', 'N/A')}")
-            st.write(f"**Random State**: {params.get('random_state', 'N/A')}")
-    else:
-        st.error("No se pudieron obtener las métricas del modelo")
-        st.info("💡 Asegúrate de que el backend esté corriendo en el puerto 8000")
-
-# Página: Presentación (obsolete)
-if False: # elif page == "📈 Presentación":
-    st.header("📈 FireRiskAI - Sistema de Predicción de Riesgo de Incendios")
-    
-    # Hero Section
-    st.markdown("""
-    ### 🎯 **Sistema Inteligente de Predicción de Riesgo de Incendios Forestales**
-    
-    Utilizamos **Machine Learning Avanzado** para clasificar el tipo de vegetación y evaluar 
-    el riesgo de incendio con una precisión superior al **97%**.
-    """)
-    
-    # Obtener información del modelo
-    model_info = fetch_data("/model")
-    
-    if model_info:
-        model_data = model_info.get("model_info", {})
-        perf = model_info.get("performance", {})
-        
-        # Métricas principales
-        st.markdown("---")
-        st.subheader("🎯 Métricas del Modelo")
-        
-        col1, col2, col3, col4 = st.columns(4)
-        with col1:
-            st.metric("🎯 Accuracy", f"{perf.get('accuracy', 0)*100:.2f}%")
-        with col2:
-            st.metric("📊 Clases", perf.get("classes", 7))
-        with col3:
-            st.metric("🔢 Features", perf.get("features", 54))
-        with col4:
-            st.metric("💾 Dataset", f"{perf.get('dataset_size', 0):,}")
-        
-        st.markdown("---")
-        
-        # Características del Sistema
-        st.subheader("✨ Características del Sistema")
-        
-        col1, col2 = st.columns(2)
-        
-        with col1:
-            st.markdown("""
-            #### 🧠 **Machine Learning**
-            - Modelo **XGBoost Ensemble** optimizado
-            - Precisión del **97.07%**
-            - Overfitting controlado (<3%)
-            - Validación cruzada estratificada
-            """)
-            
-            st.markdown("""
-            #### 🔄 **A/B Testing**
-            - Comparación en tiempo real de modelos
-            - Distribución inteligente de tráfico
-            - Estadísticas por modelo
-            - Dashboard de monitoreo
-            """)
-        
-        with col2:
-            st.markdown("""
-            #### 🔍 **Data Drift Detection**
-            - Monitoreo automático de cambios
-            - Alertas en tiempo real
-            - Historial de detecciones
-            - Integración con MongoDB
-            """)
-            
-            st.markdown("""
-            #### 🤖 **Auto Model Replacement**
-            - Comparación automática de modelos
-            - Reemplazo inteligente
-            - Gestión manual de modelos
-            - Rollback automático
-            """)
-        
-        # Matriz de Clases
-        usage = model_info.get("usage", {})
-        if "class_names" in usage:
-            st.markdown("---")
-            st.subheader("🌳 Tipos de Vegetación Clasificados")
-            
-            class_names = usage.get("class_names", [])
-            
-            # Crear una tabla visual
-            cols_per_row = 3
-            rows = [class_names[i:i+cols_per_row] for i in range(0, len(class_names), cols_per_row)]
-            
-            for row in rows:
-                cols = st.columns(len(row))
-                for idx, class_name in enumerate(row):
-                    with cols[idx]:
-                        # Determinar color según tipo
-                        if "Pine" in class_name or "Fir" in class_name:
-                            st.info(f"🌲 {class_name}")
-                        else:
-                            st.info(f"🪵 {class_name}")
-        
-        # Parámetros del Modelo
-        params = model_info.get("parameters", {})
-        st.markdown("---")
-        st.subheader("⚙️ Configuración del Modelo")
-        
-        col1, col2 = st.columns(2)
-        with col1:
-            st.write(f"**Learning Rate**: {params.get('learning_rate', 'N/A')}")
-            st.write(f"**Max Depth**: {params.get('max_depth', 'N/A')}")
-        with col2:
-            st.write(f"**N Estimators**: {params.get('n_estimators', 'N/A')}")
-            st.write(f"**Subsample**: {params.get('subsample', 'N/A')}")
-
-# Página: A/B Testing
-elif page == "🧪 A/B Testing":
-    st.header("🧪 A/B Testing - Comparación de Modelos")
-    
-    st.info("""
-    ℹ️ **A/B Testing está disponible localmente pero no en producción**
-    
-    **¿Qué es A/B Testing?**
-    Es una técnica que permite comparar el rendimiento de diferentes modelos en tiempo real, 
-    distribuyendo el tráfico de predicciones entre ellos para determinar cuál funciona mejor.
-    
-    **¿Por qué no está disponible en Render?**
-    Los modelos de A/B Testing (Random Forest, Extra Trees, XGBoost) son muy pesados (800+ MB) 
-    y exceden los límites de memoria de Render.com en el plan gratuito.
-    
-    **¿Dónde usar A/B Testing?**
-    - ✅ **Localmente**: Para pruebas y desarrollo
-    - ✅ **Servidores propios**: Con suficiente RAM (4GB+)
-    - ✅ **Cloud con más recursos**: AWS, GCP, etc.
-    
-    **Alternativa en producción:**
-    - Usa **🤖 Gestión de Modelos** para activar el mejor modelo basado en métricas
-    """)
-    
-    st.markdown("---")
-    st.subheader("📊 Simulación de A/B Testing")
-    st.write("A continuación se muestra un ejemplo de cómo funcionaría el A/B Testing:")
-    
-    # Simulación de datos
-    models_data = pd.DataFrame({
-        "Modelo": ["XGBoost", "Random Forest", "Extra Trees"],
-        "Predicciones": [1500, 500, 480],
-        "Confianza Promedio": [97.2, 95.8, 95.5],
-        "Tiempo Promedio (ms)": [42.5, 38.2, 37.8]
-    })
-    
-    st.dataframe(models_data, width='stretch', hide_index=True)
-    
-    fig = px.bar(models_data, x="Modelo", y="Confianza Promedio", 
-                title="Comparación de Modelos (Simulación)",
-                color="Confianza Promedio",
-                color_continuous_scale="Viridis")
-    st.plotly_chart(fig, width='stretch')
-    
-    st.success("""
-    ✅ **Conclusiones de la simulación:**
-    
-    - **XGBoost** tiene la mejor accuracy (97.2%)
-    - Es el modelo recomendado para usar en producción
-    - Ve a **🤖 Gestión de Modelos** para activarlo
-    """)
-
-# Página: Data Drift
-elif page == "🔍 Data Drift":
-    st.header("🔍 Data Drift Monitoring")
-    
-    # Introducción llamativa
-    st.markdown("""
-    ### 🎯 ¿Por qué es importante el Data Drift?
-    
-    El **Data Drift** es un problema crítico en Machine Learning: cuando los datos de producción 
-    cambian respecto a los datos de entrenamiento, el modelo puede perder precisión.
-    
-    **✅ Valor de esta funcionalidad:**
-    - 🛡️ **Prevención proactiva**: Detecta problemas antes de que afecten la precisión
-    - 📊 **Transparencia**: Te mantiene informado sobre cambios en tus datos
-    - 💰 **Ahorro de costos**: Evita predicciones incorrectas que cuestan dinero
-    - 🔄 **Reentrenamiento inteligente**: Sabes cuándo es necesario reentrenar el modelo
-    """)
-    
-    # Estado actual
-    drift_status = fetch_data("/drift/status")
-    
-    if drift_status:
-        st.subheader("Estado Actual")
-        
-        col1, col2, col3 = st.columns(3)
-        with col1:
-            has_baseline = drift_status.get("has_baseline", False)
-            st.metric("Baseline Establecido", "✅ Sí" if has_baseline else "❌ No")
-        with col2:
-            st.metric("Total Detecciones", drift_status.get("total_detections", 0))
-        with col3:
-            st.metric("Threshold", drift_status.get("threshold", 0.1))
-        
-        # Alertas de drift
-        drift_alerts = fetch_data("/drift/alerts")
-        
-        if drift_alerts and drift_alerts.get("has_active_alerts"):
-            st.error("⚠️ ALERTAS ACTIVAS DE DRIFT")
-            
-            for alert in drift_alerts.get("alerts", []):
-                st.warning(f"""
-                **{alert.get('type', 'Unknown')}**
-                - Severidad: {alert.get('severity', 'Unknown')}
-                - Mensaje: {alert.get('message', '')}
-                - Timestamp: {alert.get('timestamp', '')}
-                """)
-        else:
-            st.success("✅ No hay alertas de drift activas")
-        
-        # Demo interactiva de Data Drift
-        st.markdown("---")
-        st.subheader("🎬 Demo: Simular Data Drift")
-        
-        col1, col2 = st.columns(2)
-        
-        with col1:
-            drift_magnitude = st.slider(
-                "Magnitud del Cambio (%)",
-                min_value=0,
-                max_value=50,
-                value=0,
-                help="Simular qué tan diferente son los nuevos datos"
-            )
-        
-        with col2:
-            simulate_drift = st.button("🔍 Simular Data Drift", type="primary")
-        
-        if simulate_drift:
-            with st.spinner("Analizando cambios en los datos..."):
-                time.sleep(1)
-                
-                if drift_magnitude < 10:
-                    st.success(f"✅ **Sin drift detectado** (cambio del {drift_magnitude}%)")
-                    st.info("""
-                    🎯 **El sistema está funcionando perfectamente:**
-                    
-                    - Los datos de producción están alineados con los datos de entrenamiento
-                    - El modelo mantiene su precisión
-                    - No es necesario reentrenar
-                    """)
-                elif drift_magnitude < 25:
-                    st.warning(f"⚠️ **Drift DETECTADO** (cambio del {drift_magnitude}%)")
-                    st.error("""
-                    🚨 **Acción recomendada:**
-                    
-                    - Los datos han cambiado significativamente
-                    - Considerar reentrenar el modelo
-                    - Monitorear la accuracy en las próximas semanas
-                    - Umbral de reentrenamiento: 20% de cambio
-                    """)
-                else:
-                    st.error(f"🚨 **DRIFT CRÍTICO** (cambio del {drift_magnitude}%)")
-                    st.error("""
-                    ⚠️ **ACCIÓN INMEDIATA REQUERIDA:**
-                    
-                    - **REENTRENAR EL MODELO INMEDIATAMENTE**
-                    - Los datos han cambiado demasiado
-                    - El modelo actual puede estar obsoleto
-                    - Accuracy esperada: <90% (debajo del umbral)
-                    """)
-        
-        # Sección para establecer baseline
-        if not has_baseline:
-            st.markdown("---")
-            st.subheader("⚙️ Establecer Baseline")
-            st.write("Para comenzar el monitoreo, establece una baseline con datos de referencia.")
-            
-            if st.button("🔧 Establecer Baseline con Datos de Ejemplo"):
-                # Datos de ejemplo del dataset
-                baseline_data = {
-                    "baseline_data": [
-                        [2500, 180, 15, 200, 50, 1000, 220, 230, 140, 500] + [0]*44,
-                        [2600, 190, 16, 210, 55, 1100, 225, 235, 145, 510] + [0]*44,
-                        [2400, 170, 14, 190, 45, 900, 215, 225, 135, 490] + [0]*44
-                    ]
-                }
-                
-                try:
-                    response = requests.post(f"{BASE_URL}/drift/baseline", json=baseline_data, timeout=30)
-                    if response.status_code == 200:
-                        st.success("✅ Baseline establecido correctamente")
-                        st.rerun()
-                    else:
-                        st.error(f"Error estableciendo baseline: {response.text}")
-                except Exception as e:
-                    st.error(f"Error conectando al backend: {e}")
-        
-        # Historial de drift
-        drift_history = fetch_data("/drift/history")
-        
-        if drift_history and drift_history.get("history"):
-            st.subheader("Historial de Drift")
-            df_history = pd.DataFrame(drift_history.get("history", []))
-            
-            if not df_history.empty:
-                st.dataframe(df_history)
-    else:
-        st.error("No se pudo obtener el estado de Data Drift")
-
-# Página: Gestión de Modelos
-elif page == "🤖 Gestión Modelos":
-    st.header("🤖 Gestión y Reemplazo de Modelos")
-    
-    st.markdown("""
-    ### 🎯 **Auto Model Replacement**
-    
-    Sistema que compara automáticamente diferentes modelos entrenados y recomienda cuál usar en producción 
-    basándose en métricas de rendimiento (accuracy, F1-score, overfitting).
-    """)
-    
-    # Modelo actual en producción
-    st.markdown("---")
-    st.subheader("✅ Modelo en Producción")
-    
-    col1, col2, col3, col4 = st.columns(4)
-    with col1:
-        st.metric("Modelo", "XGBoost", help="Modelo activo")
-    with col2:
-        st.metric("Accuracy", "97.07%", delta="Excelente")
-    with col3:
-        st.metric("F1-Score", "96.6%", delta="Muy bueno")
-    with col4:
-        st.metric("Overfitting", "2.92%", delta="Controlado", delta_color="normal")
-    
-    # Modelos disponibles
-    st.markdown("---")
-    st.subheader("📊 Modelos Entrenados Disponibles")
-    
-    # Datos de modelos (simulados con valores reales del entrenamiento)
-    models_data = pd.DataFrame({
-        "Modelo": ["XGBoost (Activo)", "Random Forest", "Extra Trees"],
-        "Accuracy": [97.07, 95.38, 95.27],
-        "F1-Score": [96.6, 95.2, 95.1],
-        "Overfitting": [2.92, 3.0, 3.1],
-        "Tiempo Entrenamiento": ["45 min", "52 min", "48 min"],
-        "Estado": ["✅ Producción", "⏸️ Disponible", "⏸️ Disponible"]
-    })
-    
-    st.dataframe(models_data, width='stretch', hide_index=True)
-    
-    # Gráfico de comparación
-    fig = px.bar(
-        models_data, 
-        x="Modelo", 
-        y="Accuracy", 
-        title="Comparación de Modelos",
-        color="Accuracy",
-        color_continuous_scale="Greens",
-        text="Accuracy"
-    )
-    fig.update_traces(texttemplate='%{text:.2f}%', textposition='outside')
-    st.plotly_chart(fig, width='stretch')
-    
-    # Información sobre qué hacer
-    st.markdown("---")
-    st.subheader("💡 ¿Qué modelo usar?")
-    
-    st.success("""
-    ✅ **Recomendación**: XGBoost es el mejor modelo (97.07% accuracy)
-    
-    - El modelo actual es óptimo para producción
-    - Los otros modelos (RF, Extra Trees) son backups disponibles
-    - Si necesitas cambiar, el endpoint `/models/replace/{model_name}` está disponible
-    """)
-    
-    # Información técnica adicional
-    st.markdown("---")
-    st.subheader("📝 Información Técnica")
-    
-    st.markdown("""
-    **¿Cómo funciona el Auto-Reemplazo?**
-    
-    1. **Sistema compara métricas** automáticamente de los modelos disponibles
-    2. **Identifica el mejor** basándose en accuracy, F1-score y overfitting
-    3. **Recomienda cambio** si encuentra uno significativamente mejor
-    4. **Permite activación manual** o automática (pendiente de implementar)
-    
-    **Métricas consideradas:**
-    - ✅ Accuracy (principal)
-    - ✅ F1-Score (importante para clases desbalanceadas)
-    - ✅ Overfitting (debe ser <5%)
-    
-    **Estado actual:**
-    - ✅ XGBoost es el mejor (97.07% accuracy, 2.92% overfitting)
-    - ✅ No se recomienda cambiar (modelo óptimo)
-    - ✅ Sistema monitorizado y funcionando correctamente
-    """)
-
-# Página: Clima (obsolete)
-if False: # elif page == "🌤️ Clima":
-    st.header("🌤️ Weather API Integration")
-    
-    st.write("Ingresa coordenadas para obtener el clima:")
-    
-    col1, col2 = st.columns(2)
-    with col1:
-        lat = st.number_input("Latitud", value=40.7128)
-    with col2:
-        lon = st.number_input("Longitud", value=-74.0060)
-    
-    if st.button("Obtener Clima"):
-        response = requests.get(f"{BASE_URL}/weather", params={"lat": lat, "lon": lon})
-        if response.status_code == 200:
-            weather = response.json()
-            
-            col1, col2, col3 = st.columns(3)
-            with col1:
-                st.metric("Temperatura", f"{weather.get('temperature', 0)}°C")
-            with col2:
-                st.metric("Humedad", f"{weather.get('humidity', 0)}%")
-            with col3:
-                st.metric("Condición", weather.get("description", "N/A"))
-        else:
-            st.error("Error obteniendo datos del clima")
-
-# Streamlit actualiza automáticamente con @st.cache_data
 
